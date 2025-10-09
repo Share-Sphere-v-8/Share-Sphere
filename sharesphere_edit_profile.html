@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Sphere - Edit Profile</title>
+    <style>
+         body {
+            margin: 0;
+            padding: 0;
+            font-family:Tahoma;
+            background-color: #edf6f9;
+        }
+        h1 {
+            text-align: center;
+        }
+
+        #navbar {
+            width: 100%;
+            background-color: #006d77;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            left: 0;
+            margin-bottom: 2px;
+        }
+
+        #nav-container {
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #name {
+            display: flex;
+            align-items: center;
+        }
+
+        #name span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #edf6f9;
+        }
+
+        #desktop-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3.5rem;
+            font-size: 0.8rem;
+        }
+
+        #desktop-nav a {
+            color: #edf6f9;
+            font-weight: 500;
+            transition: color 0.5s ease;
+            font-size: medium;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        #desktop-nav a:hover {
+            color: #ffddd2;
+        }
+
+        #auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20%;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        #logout {
+            background: #e29578;
+            border: 2px solid #e29578;
+            color: #edf6f9;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        #logout:hover {
+            background: #ffddd2;
+            color: #006d77;
+        }
+        #more
+        {
+            display: none;
+            background-color: transparent;
+            color: white;
+            font-size: 1.8rem;
+        }
+        form{
+            background-color: #ECE4B7;
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: larger;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+        }
+        input 
+        {
+            position: relative;
+            font-size: large;
+            height: 50px;
+            width: 100%;
+            border-radius: 5px;
+            border: 2px dashed #006d77;
+            background-color: #edf6f9;
+        }
+        #save-btn {
+            background-color: #83C5BE;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: medium;
+            font-weight: bold;
+        }
+        #save-btn:hover {
+            background-color: #006d77;
+        }
+        @media (min-width: 751px) {
+            #auth-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            #desktop-nav
+            {
+                display: flex;
+                flex-direction: row;
+                gap: 3.5rem;
+            }
+            #more{
+                display: none ;
+                border: 2px solid #edf6f9;
+                padding: 4px;
+                margin: 2px;
+            }
+        }
+        @media (max-width: 750px) {
+            #desktop-nav {
+                display: none;
+            }
+            #more {
+                display: block;
+            }
+            #nav-container{
+                flex-direction: column;
+            }
+            #auth-buttons{
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div id="nav-container">
+            <div id="name">
+                <span>Share Sphere</span>
+            </div>
+            <button id = "more">&#9776;</button>
+            <div id="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="sharesphere_find_people.html">Find People</a>
+                <a href="sharesphere_your_account.html">Your account</a>
+                <a href="sharesphere_about_us.html">About us </a>
+                <a href="sharesphere_feedback.html">Feedback</a>
+            </div>
+
+            <div id="auth-buttons">
+                <button id="logout">Log Out</button>
+            </div>
+            
+        </div>
+    </nav>
+    <h1>Edit Profile</h1>
+    <form id="edit-profile-form">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" placeholder="Enter new username" required><br><br>
+        
+        <label for="bio">Bio:</label><br>
+        <input type ="text" id="bio" name="bio" rows="4" cols="50" placeholder="Tell us something about yourself" required></textarea><br><br>
+        
+        <label for="fileInput">Profile Picture:-</label><br>
+        <input type="file" id="fileInput" required><br><br>
+        
+        <button type="submit" id="save-btn">Save Changes</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type = "module">
+        const { createClient } = supabase;
+        const supabaseUrl = "https://vrwaodcjdaybfsphffgs.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyd2FvZGNqZGF5YmZzcGhmZmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5Njk5MTcsImV4cCI6MjA3NDU0NTkxN30.yAKuQhYUeGEFeZpLZpTcgjlXUW4LYPIi2FbBr5SDXNM";
+        const supabasec = createClient(supabaseUrl, supabaseKey);
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            sendEmailVerification
+            } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+            authDomain: "share-sphere-v-8.firebaseapp.com",
+            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+            projectId: "share-sphere-v-8",
+            storageBucket: "share-sphere-v-8.firebasestorage.app",
+            messagingSenderId: "931094139319",
+            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+            measurementId: "G-DKHQ2H23VM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        let db = getFirestore(app);
+        let auth = getAuth();
+        let more = document.getElementById("more");
+        more.addEventListener("click", moreclicked);
+        function moreclicked()
+        {
+            let dnav = document.getElementById("desktop-nav");
+            dnav.style.display = "flex";
+            dnav.style.flexDirection = "column";
+            dnav.style.gap = "0"
+            more.style.display = "none";
+        }
+
+        let logoutbtn = document.getElementById("logout");
+        logoutbtn.addEventListener("click", fnclogout);
+        function fnclogout()
+        {
+            signOut(auth)
+            .then(() => {
+                window.location.href = "sharesphere_logout.html"
+            }).catch((error) => {
+                alert("Error occured while signing out, please try again later.")
+            });
+        }
+        let user = auth.currentUser;
+        let form = document.getElementById("edit-profile-form");
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+                let usernameInput = document.getElementById("username").value;
+                let bioInput = document.getElementById("bio").value;
+                let fileInput = document.getElementById("fileInput").files[0];
+                user = auth.currentUser;
+                let email = user.email;
+                await updateDoc(doc(db, "users", email), {
+                    username: usernameInput,
+                    biodata: bioInput
+                })
+                .catch((error) => {
+                    alert("Error updating profile: ", error.message);
+                });
+                const date = Date.now();
+            if (fileInput) {
+                const { data, error } = await supabasec.storage
+                    .from('pfp')
+                    .upload(`${user.email}_t_${date}`, fileInput, {upsert: true });
+
+                if (error) {
+                    alert("Error ocuured uploading to supabase storage: ", error.message);
+                } else {
+                    const {data: dataurl} = supabasec
+                        .storage
+                        .from('pfp')
+                        .getPublicUrl(`${user.email}_t_${date}`);
+                        let pfpUrl = dataurl.publicUrl;
+                        await updateDoc(doc(db, "users", email), {
+                            pfpUrl: pfpUrl
+                        }); 
+                }
+            }
+
+            alert("Profile updated successfully!");
+            window.location.href = "sharesphere_your_account.html"
+        });
+
+    </script>
+</body>
+</html>

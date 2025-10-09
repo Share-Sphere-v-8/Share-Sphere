@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1#0">
+    <title>Share Sphere - Friend email</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family:Tahoma;
+            background-color: #edf6f9;
+        }
+        h1{
+            text-align: center;
+        }
+
+        #navbar {
+            width: 100%;
+            background-color: #006d77;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            left: 0;
+            margin-bottom: 2px;
+        }
+
+        #nav-container {
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #name {
+            display: flex;
+            align-items: center;
+        }
+
+        #name span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #edf6f9;
+        }
+
+        #desktop-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3.5rem;
+            font-size: 0.8rem;
+        }
+
+        #desktop-nav a {
+            color: #edf6f9;
+            font-weight: 500;
+            transition: color 0.5s ease;
+            font-size: medium;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        #desktop-nav a:hover {
+            color: #ffddd2;
+        }
+
+        #auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20%;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        #logout {
+            background: #e29578;
+            border: 2px solid #e29578;
+            color: #edf6f9;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        #logout:hover {
+            background: #ffddd2;
+            color: #006d77;
+        }
+        #more
+        {
+            display: none;
+            background-color: transparent;
+            color: white;
+            font-size: 1.8rem;
+        }
+        #profile-pic
+        {
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        #accountinfo
+        {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin: 1rem;
+        }
+        #otherinfo
+        {
+            display: flex;
+            gap: 1.8rem;
+            flex-direction: column;
+            border: 2px dashed #006d77;
+            padding: 1rem;
+            flex-wrap: wrap;
+            font-size: 1.2rem;
+            flex-grow: 1;
+            font-weight: bold;
+        }
+        #pfpimg 
+        {
+            height: 12rem;
+            width: 12rem;
+            border-radius: 50%;
+        }
+        #posts
+        {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem;
+        }
+        #username
+        {
+            text-align: center;
+        }
+        #addfrined
+        {
+            position: inline-block;
+            background: #e29578;
+            border: 2px solid #e29578;
+            color: #edf6f9;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bolder;
+            margin: 4px;
+            width: 100%;
+            text-align: center;
+        }
+        #biodata
+        {
+            font-style: italic;
+            font-weight: normal;
+            color: #333;
+        }
+        @media (min-width: 751px) {
+            #auth-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            #desktop-nav
+            {
+                display: flex;
+                flex-direction: row;
+                gap: 3.5rem;
+            }
+            #more{
+                display: none ;
+                border: 2px solid #edf6f9;
+                padding: 4px;
+                margin: 2px;
+            }
+        }
+        @media (max-width: 750px) {
+            #desktop-nav {
+                display: none;
+            }
+            #more {
+                display: block;
+            }
+            #nav-container{
+                flex-direction: column;
+            }
+            #auth-buttons{
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div id="nav-container">
+            <div id="name">
+                <span>Share Sphere</span>
+            </div>
+            <button id = "more">&#9776;</button>
+            <div id="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="sharesphere_find_people.html">Find friends</a>
+                <a href="sharesphere_your_account.html">Your account</a>
+                <a href="sharesphere_feedback.html">Feedback</a>
+            </div>
+
+            <div id="auth-buttons">
+                <button id="logout">Log Out</button>
+            </div>
+            
+        </div>
+    </nav>
+    <main>
+        <h1 id = "username"></h1>
+        <div id = "accountinfo">
+            <div id = "profile-pic">
+                <img id ="pfpimg" src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-image-gray-blank-silhouette-vector-illustration-305503988.jpg" id = "pfp">
+            </div>
+            <div id = "otherinfo">
+                <div id = "emailid">Email id:- </div>
+                <div id = "biodata">
+                    Bio data will be displayed over here!
+                </div>
+                <div id = "friends">No of friends:- </div>
+                <div id = "Addfrined"><button id = "addfrined">Add friend</button></div>
+            </div>
+        </div>
+        <hr>
+        <h1>Posts:-</h1>
+        <div id = "posts">
+        </div>
+    </main>
+    <script type = "module">
+        let more = document.getElementById("more");
+        let logout = document.getElementById("logout");
+        more.addEventListener("click", moreclicked);
+        logout.addEventListener("click", fnclogout);
+        function fnclogout()
+        {
+            signOut(auth)
+            .then(() => {
+                window.location.href = "sharesphere_logout.html"
+            }).catch((error) => {
+                alert("Error occured while signing out, please try again later.")
+            });
+        }
+        function moreclicked()
+        {
+            let dnav = document.getElementById("desktop-nav");
+            dnav.style.display = "flex";
+            dnav.style.flexDirection = "column";
+            dnav.style.gap = "0"
+            more.style.display = "none";
+        }
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, addDoc, getDoc, getDocs, collection, updateDoc} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            sendEmailVerification,
+            } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+            authDomain: "share-sphere-v-8.firebaseapp.com",
+            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+            projectId: "share-sphere-v-8",
+            storageBucket: "share-sphere-v-8.firebasestorage.app",
+            messagingSenderId: "931094139319",
+            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+            measurementId: "G-DKHQ2H23VM"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        let db = getFirestore(app);
+        let auth = getAuth();
+
+        let logoutbtn = document.getElementById("logout");
+
+        let addfrinedbtn = document.getElementById("addfrined");
+        addfrinedbtn.addEventListener("click", () =>
+        {
+            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            onAuthStateChanged(auth, async (user) =>
+            {
+                let data = await getDoc(doc(db, "users", fndemail));
+                console.log("Fetched data:", data.data());
+                const requestssent = data.data().friendrequestssent || [];
+                console.log("request sent", requestssent)
+                const requestsReceived = data.data().friendrequestsreceived || [];
+                const friendList = data.data().friendlist || [];
+                const isFriend = friendList.includes(user.email);
+                const alreadyRequested = requestsReceived.includes(user.email);
+                const alreadysent = requestssent.includes(user.email);
+                console.log(alreadysent);
+                if (isFriend || alreadyRequested || alreadysent)
+                {
+                    alert("This user is already your friend or has sent You a friend request.");
+                    return;
+                }
+                if (user && !isFriend && !alreadyRequested && !alreadysent)
+                {
+                    let useremail = user.email;
+                    if (useremail === fndemail)
+                    {
+                        alert("You cannot add yourself as a friend.");
+                        return;
+                    }
+                    await updateDoc(doc(db, "users", useremail), {
+                        friendrequestssent : [fndemail]
+                    });
+                    await updateDoc(doc(db, "users", fndemail), {
+                        friendrequestsreceived : [useremail]
+                    });
+                    alert("Friend added successfully!");
+                }
+
+            });
+        });
+
+        onAuthStateChanged(auth, async (user) =>
+        {
+            if (!user.emailVerified)
+            {
+                alert("Please verify your email first to use our application, an link has been sent in your email, please clcik on that link to continue using our application. Please find the email in the spam folder.")
+                window.location.href = "sharesphere_home.html";
+            }
+           if (user)
+            {
+                let email = new URLSearchParams(window.location.search).get("fndemail");
+                let datadoc = await getDoc(doc(db, "users", email));
+                let pfpUrl = datadoc.data().pfpUrl;
+                if (pfpUrl)
+                {   
+                    let pfpimg = document.getElementById("pfpimg");
+                    pfpimg.src = pfpUrl;
+                }
+                let biodatadiv = document.getElementById("biodata");
+                biodatadiv.innerText = datadoc.data().biodata;
+                let friendiv = document.getElementById("friends")
+                friends.innerText = "No of friends:- "+ datadoc.data().friends;
+                let usernamediv = document.getElementById("username");
+                usernamediv.innerText = datadoc.data().username;
+                let firendlist = datadoc.data().friendlist;
+                for(const frnd of firendlist)
+                {
+                    if (frnd == user.email)
+                    {
+                        let addfrined = document.getElementById("addfrined");
+                        addfrined.style.display = "none";
+                        usernamediv.innerText = datadoc.data().username + " (Your friend)";
+                    }
+                }
+                let emaildiv = document.getElementById("emailid");
+                emaildiv.innerText = "Email id:- " + email;
+                let postsdiv = document.getElementById("posts");
+                let postsnapshot = await getDocs(collection(db, "posts"));
+                postsnapshot.forEach((doc) => {
+                    let postdata = doc.data();
+                    if (postdata.email === email)
+                    {
+                        let postdiv = document.createElement("div");
+                        postdiv.style.display = "flex";
+                        postdiv.style.flexDirection = "column";
+                        postdiv.style.alignItems = "center";
+                        postdiv.style.justifyContent = "center";
+                        postdiv.style.border = "2px solid #006d77";
+                        postdiv.flexGrow = "1";
+                        postdiv.style.borderRadius = "8px";
+                        postdiv.style.backgroundColor = "#f9f9f9";
+                        let imgdiv = document.createElement("img");
+                        imgdiv.src = postdata.imageUrl;
+                        imgdiv.style.height = "23rem";
+                        imgdiv.style.width = "23em";
+                        imgdiv.style.margin = "4px";
+                        imgdiv.style.border = "2px solid #006d77";
+                        imgdiv.style.borderRadius = "8px";
+                        postdiv.appendChild(imgdiv);
+                        let caption = document.createElement("div");
+                        caption.innerText = postdata.caption;
+                        caption.style.textAlign = "center";
+                        caption.style.fontWeight = "bolder";
+                        caption.style.marginBottom = "1rem";
+                        postdiv.appendChild(caption);
+
+                        postsdiv.appendChild(postdiv);
+                    }
+                });
+            }
+            else{
+                alert("You are not logged in, please login to continue using our application.");
+                window.location.href = "index.html";
+            }
+        });
+
+    </script>
+</body>
+</html>

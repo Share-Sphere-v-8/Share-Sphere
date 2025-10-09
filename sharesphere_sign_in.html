@@ -1,0 +1,153 @@
+<html>
+    <head>
+        <title>Share Sphere- Sign In</title>
+        <link rel="icon" href = "#">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                text-align: center;
+                background-color: #aff0e3;
+                margin: 0px;
+                padding: 0px;
+            }
+            h1 {
+                text-align: center;
+            }
+            input {
+                position: relative;
+                font-size: large;
+                height: 50px;
+                width: 100%;
+                border-radius: 5px;
+                border: 2px dashed #006d77;
+                background-color: #edf6f9;
+            }
+            input:hover {
+                background-color: #aff0e3;
+                transform: scale(1.07);
+            }
+            #signup-form {
+                position: relative;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                flex-direction: column;
+                padding: 0px;
+                margin: 0px;
+            }
+            #submit {
+                font-size: 30px;
+                color: black;
+                border-radius: 80px;
+                height: 40px;
+                background-color: transparent;
+                font-family: 'Lobster';
+                border: 2px solid black;
+            }
+            #submit:hover {
+                background-color: #e29578;
+                transform: scale(1.2);
+                border: 3px solid black;
+            }
+            #submit:active {
+                color: red;
+            }
+            #box {
+                width: fit-content;
+                display: inline-flex;
+                align-items: center;
+                border: 8px outset #e29578;
+                text-align: center;
+                padding: 5%;
+                font-weight: bolder;
+                border-radius: 8px;
+                background-color: #fdfcdc;
+                flex-direction: column;
+            }
+            #googlebut {
+                margin: 8px;
+            }
+            h1, h2, h3 {
+                font-family: 'Playfair Display', serif;
+            }
+            a
+            {
+                color: #e29578;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Share Sphere - Sign In</h1>
+        <div id = "box">
+            <form id="signup-form">
+                <h2>Welcome Back</h2>
+                <div id = "divemail">
+                    <input type="email" id ="email" name = "email" placeholder = "Email" required>
+                </div><br>
+                <div id = "divpassword">
+                    <input type = "password" id = "password" name = "password" placeholder = "Password" required>
+                </div><br>
+                <br><br>
+                <input type="submit" id = "submit"><br>
+                <div id ="dontacc"><a href = "sharesphere_sign_up.html">Don't have an account? Click here to sign up</a></div>
+            </form>
+        </div>
+    </body>
+    <script type="module">
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+        import {
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+            authDomain: "share-sphere-v-8.firebaseapp.com",
+            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+            projectId: "share-sphere-v-8",
+            storageBucket: "share-sphere-v-8.firebasestorage.app",
+            messagingSenderId: "931094139319",
+            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+            measurementId: "G-DKHQ2H23VM"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        let auth = getAuth(app);
+
+        let submit = document.getElementById("signup-form");
+        submit.addEventListener ("submit", signin);
+        function signin(event){
+            event.preventDefault();
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                let user = userCredential.user;
+                let db = getFirestore(app);
+                getDoc(doc(db, "users", email))
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists()) {
+                        let name = docSnapshot.data().username
+                        alert(`Welcome back ${name} `);
+                        window.location.href = "#";
+                    }
+                })
+                .catch((error) => {
+                    alert("Error fetching user data:", error.message);
+                });
+            })
+            .catch((error) => {
+                alert("Error occured while logging in, check weather the entered email id and password are correct or not");
+            });
+        }
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "sharesphere_public_page.html"
+            }
+        });0
+      </script>
+</html>
