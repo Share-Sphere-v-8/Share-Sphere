@@ -334,13 +334,13 @@
 
         onAuthStateChanged(auth, async (user) =>
         {
-            if (!user.emailVerified)
+            if (user)
             {
-                alert("Please verify your email first to use our application, an link has been sent in your email, please clcik on that link to continue using our application. Please find the email in the spam folder.")
-                window.location.href = "sharesphere_home.html";
-            }
-           if (user)
-            {
+                if(user.emailVerified === false)
+                {
+                alert("Please verify your email id first, to access your account");
+                window.location.href = "index.html";
+                }
                 let email = user.email;
                 let datadoc = await getDoc(doc(db, "users", email));
                 let pfpUrl = datadoc.data().pfpUrl;
@@ -391,8 +391,8 @@
                     }
                 });
             }
-            else{
-                alert("You are not logged in, please login to continue using our application.");
+            else
+            {
                 window.location.href = "index.html";
             }
         });
@@ -411,6 +411,7 @@
         {
             window.location.href = "sharesphere_friends.html";
         }
+        
 
     </script>
 </body>
