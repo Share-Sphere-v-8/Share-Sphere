@@ -141,7 +141,7 @@
         {
             text-align: center;
         }
-        #addfrined
+        #addfrined, #chatnow
         {
             position: inline-block;
             background: #e29578;
@@ -162,6 +162,13 @@
             font-style: italic;
             font-weight: normal;
             color: #333;
+        }
+        #buttons
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
         }
         @media (min-width: 751px) {
             #auth-buttons {
@@ -231,7 +238,10 @@
                     Bio data will be displayed over here!
                 </div>
                 <div id = "friends">No of friends:- </div>
+                <div id = "buttons">
                 <div id = "Addfrined"><button id = "addfrined">Add friend</button></div>
+                <div id = "Chatnow"><button id = "chatnow">Chat now!</button></div>
+                </div>
             </div>
         </div>
         <hr>
@@ -404,6 +414,12 @@
                 window.location.href = "index.html";
             }
         });
+        let chatnow = document.getElementById("chatnow");
+        chatnow.addEventListener("click", () =>
+        {
+            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            window.location.href = "sharesphere_chat.html?fndemail=" + encodeURIComponent(fndemail); 
+        }); 
 
     </script>
 </body>
