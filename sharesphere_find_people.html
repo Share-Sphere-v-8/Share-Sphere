@@ -295,6 +295,10 @@
                 chatbutton.style.borderRadius = "5px";
                 chatbutton.style.fontSize = "1rem";
                 chatbutton.style.transition = "background-color 0.3s ease";
+                chatbutton.addEventListener("click", () =>
+                {
+                    window.location.href = "sharesphere_chat.html?fndemail=" + encodeURIComponent(fndemail);
+                });
 
                 const frienddiv = document.createElement("div");
                 frienddiv.innerText = "No of friends:- " + friends;
