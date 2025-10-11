@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Sphere - Chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family:Tahoma;
+            background-color: #edf6f9;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden; 
+            background-color: #f1f1f1;
+        }
+        h1 {
+            text-align: center;
+        }
+
+        #navbar {
+            width: 100%;
+            background-color: #006d77;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            left: 0;
+            margin-bottom: 2px;
+        }
+
+        #nav-container {
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #name {
+            display: flex;
+            align-items: center;
+        }
+
+        #name span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #edf6f9;
+        }
+
+        #desktop-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3.5rem;
+            font-size: 0.8rem;
+        }
+
+        #desktop-nav a {
+            color: #edf6f9;
+            font-weight: 500;
+            transition: color 0.5s ease;
+            font-size: medium;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        #desktop-nav a:hover {
+            color: #ffddd2;
+        }
+
+        #auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20%;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        #logout {
+            background: #e29578;
+            border: 2px solid #e29578;
+            color: #edf6f9;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        #logout:hover {
+            background: #ffddd2;
+            color: #006d77;
+        }
+        #more
+        {
+            display: none;
+            background-color: transparent;
+            color: white;
+            font-size: 1.8rem;
+        }
+        #chatcon {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            background: #f1f1f1;
+            }
+
+            #chatheading {
+            flex-shrink: 0;
+            background: #075E54;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            }
+
+            #chatbox {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding: 10px;
+            background: #e5ddd5;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            padding-bottom: 70px;
+            }
+
+            #fndchats, #mychats {
+            margin: 5px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 70%;
+            }
+
+            #fndchats {
+            background: transparent;
+            align-self: flex-start;
+            }
+
+            #mychats {
+            background: transparent;
+            align-self: flex-end;
+            }
+
+            #inputbox {
+            flex-shrink: 0;
+            background: #fff;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            }
+
+            #input {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            }
+
+            #text {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            }
+
+            #submit {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #128C7E;
+            color: white;
+            cursor: pointer;
+            }
+        @media (min-width: 751px) {
+            #auth-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            #desktop-nav
+            {
+                display: flex;
+                flex-direction: row;
+                gap: 3.5rem;
+            }
+            #more{
+                display: none ;
+                border: 2px solid #edf6f9;
+                padding: 4px;
+                margin: 2px;
+            }
+        }
+        @media (max-width: 750px) {
+            #desktop-nav {
+                display: none;
+            }
+            #more {
+                display: block;
+            }
+            #nav-container{
+                flex-direction: column;
+            }
+            #auth-buttons{
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+        <div id = "chatcon">
+            <nav id="navbar">
+            <div id="nav-container">
+            <div id="name">
+                <span>Share Sphere</span>
+            </div>
+            <button id = "more">&#9776;</button>
+            <div id="desktop-nav">
+                <a href="index.html">Home</a>
+                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="sharesphere_find_people.html">Find People</a>
+                <a href="sharesphere_your_account.html">Your account</a>
+                <a href="sharesphere_about_us.html">About us </a>
+                <a href="sharesphere_feedback.html">Feedback</a>
+            </div>
+
+            <div id="auth-buttons">
+                <button id="logout">Log Out</button>
+            </div>
+            
+        </div>
+    </nav>
+            <div id = "chatheading">
+                <div id ="fndname"></div>
+                <div id = "fndemail"></div>
+            </div>
+            <div id = "chatbox">
+            </div>
+            <div id = "inputbox">
+                <form id = "input">
+                    <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
+                    <input type = "submit" id = "submit" placeholder = "Send">
+                </form>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type = "module">
+        const { createClient } = supabase;
+        const supabaseUrl = "https://vrwaodcjdaybfsphffgs.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyd2FvZGNqZGF5YmZzcGhmZmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5Njk5MTcsImV4cCI6MjA3NDU0NTkxN30.yAKuQhYUeGEFeZpLZpTcgjlXUW4LYPIi2FbBr5SDXNM";
+        const supabasec = createClient(supabaseUrl, supabaseKey);
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            sendEmailVerification
+            } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+            import { getDatabase, ref, set, get, child, onValue, onChildAdded, push } 
+      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+            authDomain: "share-sphere-v-8.firebaseapp.com",
+            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+            projectId: "share-sphere-v-8",
+            storageBucket: "share-sphere-v-8.firebasestorage.app",
+            messagingSenderId: "931094139319",
+            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+            measurementId: "G-DKHQ2H23VM"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase(app);
+        const fs = getFirestore(app);
+        let auth = getAuth();
+        let more = document.getElementById("more");
+        more.addEventListener("click", moreclicked);
+        function moreclicked()
+        {
+            let dnav = document.getElementById("desktop-nav");
+            dnav.style.display = "flex";
+            dnav.style.flexDirection = "column";
+            dnav.style.gap = "0"
+            more.style.display = "none";
+        }
+
+        let logoutbtn = document.getElementById("logout");
+        logoutbtn.addEventListener("click", fnclogout);
+        function fnclogout()
+        {
+            signOut(auth)
+            .then(() => {
+                window.location.href = "sharesphere_logout.html"
+            }).catch((error) => {
+                alert("Error occured while signing out, please try again later.")
+            });
+        }
+        onAuthStateChanged(auth, async (user)=> {
+            if (user)
+        {
+            if(user.emailVerified === false)
+            {
+            alert("Please verify your email id first, to access your account");
+            window.location.href = "index.html";
+            }
+            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            console.log(fndemail);
+            let friend = await getDoc(doc(fs, "users", fndemail));
+            let fndname = friend.data().username;
+            let fndnamediv = document.getElementById("fndname");
+            fndnamediv.innerText = fndname;
+            let fndemaildiv = document.getElementById("fndemail");
+            fndemaildiv.innerText = fndemail;
+            let inputform = document.getElementById("input");
+            let text = document.getElementById("text").value;
+            let address = `hi`
+            inputform.addEventListener("submit", async(e) =>
+            {
+                e.preventDefault();
+                let text = document.getElementById("text").value;
+                console.log(text);
+                let useremailSafe = user.email.replace(/\./g, ",");
+                let fndemailSafe = fndemail.replace(/\./g, ",");
+
+                let address;
+                if (user.email > fndemail) {
+                    address = `${useremailSafe}_${fndemailSafe}`;
+                } else {
+                    address = `${fndemailSafe}_${useremailSafe}`;
+                }
+                const chatRef = ref(db, `chats/${address}/messages`);
+
+                const newMsg = push(chatRef);
+                set(newMsg, {
+                sender: user.email,
+                text: text,
+                timestamp: Date.now()
+                });
+                let textdiv = document.getElementById("text");
+                textdiv.value = "";
+            });
+            let useremailSafe = user.email.replace(/\./g, ",");
+                let fndemailSafe = fndemail.replace(/\./g, ",");
+                if (user.email > fndemail) {
+                    address = `${useremailSafe}_${fndemailSafe}`;
+                } else {
+                    address = `${fndemailSafe}_${useremailSafe}`;
+                }
+            const chatRef = ref(db, `chats/${address}/messages`);
+
+            onChildAdded(chatRef, (snapshot) => {
+            const msg = snapshot.val();
+            if(msg.sender == user.email)
+            {
+                let div = document.createElement("div");
+                let sentmessagediv = document.createElement("div");
+                sentmessagediv.innerText = msg.text;
+                sentmessagediv.style.padding = "7px";
+                sentmessagediv.style.display = "inline-block";
+                sentmessagediv.style.backgroundColor = "#dcf8c6"
+                div.style.margin = "5px";
+                div.style.padding = "8px 12px";
+                sentmessagediv.style.borderRadius = "10%";
+                div.style.textAlign = "right"
+                let mychats = document.getElementById("chatbox");
+                mychats.scrollTop = mychats.scrollHeight;
+                div.appendChild(sentmessagediv)
+                mychats.appendChild(div);
+            }
+            else{
+                let div = document.createElement("div");
+                let sentmessagediv = document.createElement("div");
+                sentmessagediv.innerText = msg.text;
+                sentmessagediv.style.padding = "7px";
+                sentmessagediv.style.display = "inline-block";
+                sentmessagediv.style.backgroundColor = "white"
+                div.style.margin = "5px";
+                div.style.padding = "8px 12px";
+                sentmessagediv.style.borderRadius = "10%";
+                div.style.textAlign = "left"
+                let mychats = document.getElementById("chatbox");
+                mychats.scrollTop = mychats.scrollHeight;
+                div.appendChild(sentmessagediv)
+                mychats.appendChild(div);
+
+            }
+        });
+
+        }
+            else {
+                alert("you are not logged in!");
+                window.location.href="index.html";
+            }
+        });
+    </script>
+</body>
+</html>
