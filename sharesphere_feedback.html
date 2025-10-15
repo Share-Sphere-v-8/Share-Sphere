@@ -293,6 +293,14 @@
         window.location.href = "sharespher_sign_in.html";
     });
     logout.addEventListener("click", fnclogout);
+    let more = document.getElementById("more");
+    more.addEventListener("click", () => {
+      let dnav = document.getElementById("desktop-nav");
+      dnav.style.display = "flex";
+      dnav.style.flexDirection = "column";
+      dnav.style.gap = "0";
+      more.style.display = "none";
+    });
     function fnclogout()
     {
         signOut(auth)
