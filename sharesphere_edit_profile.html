@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share Sphere - Edit Profile</title>
     <style>
-         body {
+        body {
             margin: 0;
             padding: 0;
             font-family:Tahoma;
@@ -294,6 +294,19 @@
 
             alert("Profile updated successfully!");
             window.location.href = "sharesphere_your_account.html"
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            }
+            else if (user)
+            {
+                if (!user.emailVerified) {
+                    alert("Please verify your email to edit profile.");
+                    window.location.href = "index.html";
+                }
+            }
         });
 
     </script>
