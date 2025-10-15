@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1#0">
-    <title>Share Sphere - Friend email</title>
+    <title>Share Sphere - Friend account</title>
     <style>
         body {
             margin: 0;
@@ -342,13 +342,13 @@
 
         onAuthStateChanged(auth, async (user) =>
         {
-            if (!user.emailVerified)
+           if (user)
+            {
+                if (!user.emailVerified)
             {
                 alert("Please verify your email first to use our application, an link has been sent in your email, please clcik on that link to continue using our application. Please find the email in the spam folder.")
                 window.location.href = "sharesphere_home.html";
             }
-           if (user)
-            {
                 let email = new URLSearchParams(window.location.search).get("fndemail");
                 let datadoc = await getDoc(doc(db, "users", email));
                 let pfpUrl = datadoc.data().pfpUrl;
