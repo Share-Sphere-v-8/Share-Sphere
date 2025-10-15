@@ -317,6 +317,11 @@
           let auth =  await getAuth();
           let user = auth.currentUser;
           if (user) {
+            if (!user.emailVerified) {
+                profileName.textContent = "Please verify your email";
+                pfp.style.display = "none";
+                return;
+            }
               let email = user.email;
               profileName.textContent = user.email; 
               let username_pfp = await getDoc(doc(getFirestore(), "users", email));
