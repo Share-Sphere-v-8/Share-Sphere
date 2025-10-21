@@ -130,6 +130,19 @@
         {
             display: flex;
         }
+        #largepost
+        {
+            position: fixed;           
+            top: 50%;                  
+            left: 50%;                 
+            transform: translate(-50%, -50%); 
+            background: white;         
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 9999;  
+            display: none;
+        }
          @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -191,6 +204,7 @@
         <div id = "hp">Posts:-</div>
         <div id = "posts"></div>
     </main>
+    <div id = "largepost"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module">
 
@@ -306,6 +320,47 @@
                 captionDiv.style.marginTop = "4px";
                 captionDiv.style.fontFamily = "Arial, sans-serif";
                 captionDiv.style.color = "#555";
+
+                postDiv.addEventListener("click", () => {
+                    const largePost = document.getElementById("largepost");
+                    largePost.innerHTML = "";
+
+                    const largeuserDiv = document.createElement("div");
+                    largeuserDiv.textContent = username;
+                    largeuserDiv.style.marginBottom = "20px";
+                    largeuserDiv.style.fontWeight = "bold";
+                    largeuserDiv.style.fontFamily = "Arial, sans-serif";
+                    largeuserDiv.style.textAlign = "center";
+                    largePost.appendChild(largeuserDiv);
+                    const largeImg = document.createElement("img");
+                    largeImg.src = imgSrc;
+                    largeImg.alt = "Large Post Image";
+                    largeImg.style.maxWidth = "80vw";
+                    largeImg.style.maxHeight = "80vh";
+                    largeImg.style.borderRadius = "8px";
+
+                    const largeCaption = document.createElement("div");
+                    largeCaption.textContent = caption;
+                    largeCaption.style.marginTop = "10px";
+                    largeCaption.style.fontFamily = "Arial, sans-serif";
+                    largeCaption.style.color = "#333";
+                    largeCaption.style.fontSize = "1.2rem";
+
+                    largePost.appendChild(largeImg);
+                    largePost.appendChild(largeCaption);
+                    largePost.style.display = "block";
+                    largePost.addEventListener("click", () => {
+                        largePost.style.display = "none";
+                    });
+                    let closebtn = document.createElement("div");
+                    closebtn.textContent = "Click anywhere to close";
+                    closebtn.style.marginTop = "10px";
+                    closebtn.style.fontFamily = "Arial, sans-serif";
+                    closebtn.style.color = "#777";
+                    closebtn.style.fontSize = "0.9rem";
+                    largePost.appendChild(closebtn);
+
+                });
 
                 postDiv.appendChild(img);
                 postDiv.appendChild(captionDiv);
