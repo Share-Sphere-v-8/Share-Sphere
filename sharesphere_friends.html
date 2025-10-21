@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
-    <title>Share Sphere - Find People </title>
+    <title>Share Sphere - Friends and requests</title>
     <style>
          body {
             margin: 0;
@@ -356,8 +356,9 @@
             for (const frndemail of friendsemails)
             {
                 const frnddata = await getDoc(doc(db, "users", frndemail));
+                const fndemail = frnddata.data().email;
                 const frndname = frnddata.data().username || "Unknown User";
-                const frndpfp = frnddata.data().pfpUrl || "default_pfp_url";
+                const frndpfp = frnddata.data().pfpUrl;
                 const biodata = frnddata.data().biodata || "No biodata available";
                 const frnddiv = document.createElement("div");
                 frnddiv.style.display = "flex";
@@ -402,11 +403,26 @@
                     localStorage.setItem("friendemail", frndemail);
                     window.location.href = "sharesphere_friend_account.html?fndemail=" + encodeURIComponent(frndemail);
                 });
+                const chatbutton = document.createElement("button");
+                chatbutton.innerText = "Chat now!";
+                chatbutton.style.marginLeft = "1rem";
+                chatbutton.style.backgroundColor = "#e29578";
+                chatbutton.style.color = "#edf6f9";
+                chatbutton.style.border = "none";
+                chatbutton.style.padding = "0.5rem 1rem";
+                chatbutton.style.borderRadius = "5px";
+                chatbutton.style.fontSize = "1rem";
+                chatbutton.style.transition = "background-color 0.3s ease";
+                chatbutton.addEventListener("click", () =>
+                {
+                    window.location.href = "sharesphere_chat.html?fndemail=" + encodeURIComponent(fndemail);
+                });
 
                 frnddiv.appendChild(pfpimg);
                 frnddiv.appendChild(namepara);
                 frnddiv.appendChild(biodatapara);
                 frnddiv.appendChild(viewaccountbtn);
+                frnddiv.appendChild(chatbutton);
                 
                 friendslistdiv.appendChild(frnddiv);
             }
