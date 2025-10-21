@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
-  <title>Share Sphere - Home</title>
+  <title>Share Sphere</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -243,11 +243,13 @@
       <div id="profile-name">User id of the person</div>
     </div>
     <p>
-      <b>This is a platform where you can share your thoughts and ideas with the world. 
-      You can also find people with similar interests and connect with them. Explore the 
+      <b>This is a platform where you can share your thoughts and ideas with the world.
+      You can also find people with similar interests and connect with them. Explore the
       public posts and feel free to join the conversation with your friends!</b>
     </p>
-    <a href="sharesphere_public_page.html" class="launch-btn">Launch Application</a>
+    <a href="sharesphere_public_page.html" class="launch-btn" id="launch-btn">Launch Application</a>
+    <button class="launch-btn" id="signin-btn">Sign In</button>
+    <button class="launch-btn" id="signup-btn">Sign Up</button>
   </div>
   <script type = "module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -282,21 +284,35 @@
                 asu.style.display = "none";
                 asi.style.display = "none";
                 logout.style.display = "block";
+                document.getElementById("launch-btn").style.display = "inline-block";
+                document.getElementById("signin-btn").style.display = "none";
+                document.getElementById("signup-btn").style.display = "none";
             }
             else{
                 asu.style.display = "block";
                 asi.style.display = "block";
                 logout.style.display = "none";
+                document.getElementById("launch-btn").style.display = "none";
+                document.getElementById("signin-btn").style.display = "inline-block";
+                document.getElementById("signup-btn").style.display = "inline-block";
             }
-        }); 
+        });
 
       asi.addEventListener("click", () =>
       {
           window.location.href = "sharesphere_sign_in.html";
       });
-      asu.addEventListener("clcik", () =>
+      asu.addEventListener("click", () =>
       {
-          window.location.href = "sharespher_sign_in.html";
+          window.location.href = "sharesphere_sign_up.html";
+      });
+      document.getElementById("signin-btn").addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_in.html";
+      });
+      document.getElementById("signup-btn").addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_up.html";
       });
       logout.addEventListener("click", fnclogout);
       function fnclogout()
