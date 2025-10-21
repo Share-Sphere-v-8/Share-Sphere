@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1#0">
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
-    <title>Share Sphere - Friend account</title>
+    <title>Share Sphere - Friend email</title>
     <style>
         body {
             margin: 0;
@@ -18,7 +18,7 @@
 
         #navbar {
             width: 100%;
-            background-color: #006d77;
+            background-color: #001f3f;
             padding: 0;
             position: sticky;
             top: 0;
@@ -76,8 +76,8 @@
         }
 
         #logout {
-            background: #e29578;
-            border: 2px solid #e29578;
+            background: #00b4d8;
+            border: 2px solid #00b4d8;
             color: #edf6f9;
             font-size: 1rem;
             border-radius: 5px;
@@ -335,7 +335,7 @@
                     await updateDoc(doc(db, "users", fndemail), {
                         friendrequestsreceived : [useremail]
                     });
-                    alert("Friend added successfully!");
+                    alert("Friend request sent successfully!");
                 }
 
             });
@@ -425,4 +425,3 @@
     </script>
 </body>
 </html>
-
