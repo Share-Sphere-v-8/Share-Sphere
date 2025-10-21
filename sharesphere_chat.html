@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
     <title>Share Sphere - Chat</title>
     <style>
         body {
@@ -168,7 +169,7 @@
             outline: none;
             }
 
-            #submit {
+            #submit, #addsong {
             padding: 8px 16px;
             border: none;
             border-radius: 8px;
@@ -176,6 +177,30 @@
             color: white;
             cursor: pointer;
             }
+        #songbox
+        {
+            position: fixed;           
+            top: 50%;                  
+            left: 50%;                 
+            transform: translate(-50%, -50%); 
+            background: white;         
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 9999;  
+            text-align: center;
+            display: none;
+            flex-direction: column;
+        }
+        #sendsong
+        {
+            margin: 2rem;
+            padding: 1rem;
+            background-color: #128C7E;
+            color: white;
+            border-radius: 20px;
+            padding: 0.5rem;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -243,10 +268,17 @@
             <div id = "inputbox">
                 <form id = "input">
                     <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
+                    <buton id = "addsong">Add Song</buton>
                     <input type = "submit" id = "submit" placeholder = "Send">
                 </form>
             </div>
         </div>
+    <div id = "songbox">
+       <input type="text" id="search" placeholder="Search for a song">
+        <button onclick="searchSong()">Search</button>
+    <div id="player"></div>
+        <buton id = "sendsong">Send!</buton>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type = "module">
         const { createClient } = supabase;
@@ -324,7 +356,7 @@
             fndemaildiv.innerText = fndemail;
             let inputform = document.getElementById("input");
             let text = document.getElementById("text").value;
-            let address = `hi`
+            let address = null;
             inputform.addEventListener("submit", async(e) =>
             {
                 e.preventDefault();
@@ -359,6 +391,44 @@
                 }
             const chatRef = ref(db, `chats/${address}/messages`);
 
+            let send = document.getElementById("sendsong");
+            send.addEventListener("click", async() =>
+            {
+                alert("sending");
+                let address;
+                if (user.email > fndemail) {
+                    address = `${useremailSafe}_${fndemailSafe}`;
+                } else {
+                    address = `${fndemailSafe}_${useremailSafe}`;
+                }
+                const chatRef = ref(db, `chats/${address}/messages`);
+                let query = document.getElementById("search").value;
+                if (!query) return alert("Please enter a song name");
+
+                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDE8Cnuzfl8eOwMRCmjW8gsk-5X-86lY8k`;
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (data.items.length > 0) {
+                let videoId = data.items[0].id.videoId;
+                console.log(videoId);
+                alert("Process 1 done");
+                const newMsg = push(chatRef);
+                alert("Process 2 done");
+                set(newMsg, {
+                sender: user.email,
+                songurl: videoId,
+                timestamp: Date.now()
+                });
+                let songbox = document.getElementById("songbox");
+                songbox.style.display = "none";
+                }
+                else{
+                    alert("No video found");
+                    return;
+                }
+            });
+
             onChildAdded(chatRef, (snapshot) => {
             const msg = snapshot.val();
             if(msg.sender == user.email)
@@ -377,6 +447,12 @@
                 mychats.scrollTop = mychats.scrollHeight;
                 div.appendChild(sentmessagediv)
                 mychats.appendChild(div);
+                if (msg.songurl)
+                {
+                sentmessagediv.innerHTML = `<iframe width="320" height="180" 
+              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
+              frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
+                }
             }
             else{
                 let div = document.createElement("div");
@@ -391,9 +467,14 @@
                 div.style.textAlign = "left"
                 let mychats = document.getElementById("chatbox");
                 mychats.scrollTop = mychats.scrollHeight;
-                div.appendChild(sentmessagediv)
+                div.appendChild(sentmessagediv);
                 mychats.appendChild(div);
-
+                if (msg.songurl)
+                {
+                sentmessagediv.innerHTML = `<iframe width="320" height="180" 
+              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
+              frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
+                }
             }
         });
 
@@ -403,6 +484,38 @@
                 window.location.href="index.html";
             }
         });
+        let addsong = document.getElementById("addsong");
+        addsong.addEventListener("click", ()=>{
+            let songbox = document.getElementById("songbox");
+            songbox.style.display = "flex";
+        });
+        
+    </script>
+    <script>
+async function searchSong() {
+      let query = document.getElementById("search").value;
+      if (!query) return alert("Please enter a song name");
+
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDE8Cnuzfl8eOwMRCmjW8gsk-5X-86lY8k`;
+
+      try {
+        let response = await fetch(url);
+        let data = await response.json();
+
+        if (data.items.length > 0) {
+          let videoId = data.items[0].id.videoId;
+          document.getElementById("player").innerHTML =
+            `<iframe width="160" height="90" 
+              src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
+        } else {
+          alert("No video found");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error fetching YouTube data");
+      }
+    }
     </script>
 </body>
 </html>
