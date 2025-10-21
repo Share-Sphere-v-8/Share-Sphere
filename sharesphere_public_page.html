@@ -132,16 +132,19 @@
         }
         #largepost
         {
-            position: fixed;           
-            top: 50%;                  
-            left: 50%;                 
-            transform: translate(-50%, -50%); 
-            background: white;         
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 9999;  
+            z-index: 9999;
             display: none;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: auto;
         }
          @media (min-width: 751px) {
             #auth-buttons {
@@ -322,9 +325,21 @@
                 captionDiv.style.fontFamily = "Arial, sans-serif";
                 captionDiv.style.color = "#555";
 
+                const likes = document.createElement("div");
+                likes.textContent = `Likes: ${postData.likes || 0}`;
+                likes.style.marginTop = "4px";
+
                 postDiv.addEventListener("click", () => {
                     const largePost = document.getElementById("largepost");
                     largePost.innerHTML = "";
+                    largePost.style.display = "flex";
+                    largePost.style.flexDirection = "column";
+                    largePost.style.alignItems = "center";
+                    largePost.style.border = "1px solid #ccc";
+                    largePost.style.padding = "20px";
+                    largePost.style.backgroundColor = "#f9f9f9";
+                    largePost.style.height = "auto";
+                    largePost.style.width = "auto";
 
                     const largeuserDiv = document.createElement("div");
                     largeuserDiv.textContent = username;
@@ -359,6 +374,26 @@
                     closebtn.style.fontFamily = "Arial, sans-serif";
                     closebtn.style.color = "#777";
                     closebtn.style.fontSize = "0.9rem";
+
+                    const likebtn = document.createElement("button");
+                    likebtn.innerHTML = "&#x1F44D;";
+                    likebtn.style.marginTop = "15px";
+                    likebtn.style.padding = "10px 20px";
+                    likebtn.style.fontSize = "1rem";
+                    likebtn.style.cursor = "pointer";
+                    likebtn.addEventListener("click", async (e) => {
+                        e.stopPropagation();
+                        const postRef = doc(db, "posts", postDoc.id);
+                        const postSnap = await getDoc(postRef);
+                        if (postSnap.exists()) {
+                            let currentLikes = postSnap.data().likes || 0;
+                            currentLikes += 1;
+                            await updateDoc(postRef, { likes: currentLikes });
+                            likes.textContent = `Likes: ${currentLikes}`;
+                            alert("You liked this post!");
+                        }
+                    });
+                    largePost.appendChild(likebtn);
                     largePost.appendChild(closebtn);
 
                 });
@@ -366,6 +401,7 @@
                 postDiv.appendChild(img);
                 postDiv.appendChild(captionDiv);
                 postDiv.appendChild(userDiv);
+                postDiv.appendChild(likes);
                 postsContainer.appendChild(postDiv);
 
                 i++;
