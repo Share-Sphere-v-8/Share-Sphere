@@ -178,7 +178,7 @@
             color: white;
             cursor: pointer;
             }
-        #songbox
+        #songbox, #largeimagebox
         {
             position: fixed;           
             top: 50%;                  
@@ -192,6 +192,11 @@
             text-align: center;
             display: none;
             flex-direction: column;
+        }
+        #largeimage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         #sendsong
         {
@@ -282,6 +287,9 @@
         <button onclick="searchSong()">Search</button>
     <div id="player"></div>
         <buton id = "sendsong">Send!</buton>
+    </div>
+    <div id = "largeimagebox" style="display:none;">
+        <img id = "largeimage" src = "">
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type = "module">
@@ -500,6 +508,12 @@
                     img.src = msg.imageurl;
                     img.style.maxWidth = "200px";
                     img.style.display = "block";
+                    img.addEventListener("click", ()=> {
+                        let largeimagebox = document.getElementById("largeimagebox");
+                        largeimagebox.style.display = "flex";
+                        let lgimg = document.getElementById("largeimage");
+                        lgimg.src = msg.imageurl;
+                    });
                     sentmessagediv.appendChild(img);
                 }
             }
@@ -531,7 +545,14 @@
                     img.src = msg.imageurl;
                     img.style.maxWidth = "200px";
                     img.style.display = "block";
+                    img.addEventListener("click", ()=> {
+                        let largeimagebox = document.getElementById("largeimagebox");
+                        largeimagebox.style.display = "flex";
+                        let lgimg = document.getElementById("largeimage");
+                        lgimg.src = msg.imageurl;
+                    });
                     sentmessagediv.appendChild(img);
+                    
                 }
             }
         });
@@ -548,6 +569,13 @@
             songbox.style.display = "flex";
         });
         
+        // Add close listener for large image box
+        let largeimagebox = document.getElementById("largeimagebox");
+        largeimagebox.addEventListener("click", () => {
+            largeimagebox.style.display = "none";
+            let lgimg = document.getElementById("largeimage");
+            lgimg.src = "";
+        });
     </script>
     <script>
 async function searchSong() {
@@ -577,4 +605,3 @@ async function searchSong() {
     </script>
 </body>
 </html>
-
