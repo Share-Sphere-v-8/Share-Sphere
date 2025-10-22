@@ -93,7 +93,7 @@
                     <input type="date" id = "dob" name = "dob" placeholder="Date of birth">
                 </div><br>
                 <div id = "divbiodata">
-                    <input type = "text" id = "biodata" name = "biodata" placeholder = "Bio Data">
+                    <input type = "text" id = "biodata" name = "biodata" placeholder = "Bio Data" required>
                 </div><br>
                 <div id = "divemail">
                     <input type="email" id ="email" name = "email" placeholder = "Email" required>
@@ -161,11 +161,12 @@
                         date_of_birth: dob,
                         biodata: biodata,
                         friends: 0,
+                        pfp: "",
                         timestap: new Date()
                     })
                     .then(() => {
-                        alert ("Acoount created, an verification email has been sent, please clcik on the link and verify your email to continue using our application! (The mail might have reached the spam folder in your email");
-                        window.location.href = "#";
+                        alert ("Acoount created, an verification email has been sent, please click on the link and verify your email to continue using our application! (The mail might have reached the spam folder in your email");
+                        window.location.href = "index.html";
                     })
                     .catch((error) => {
                         alert ("Error Occured in sending data! Please retry");
