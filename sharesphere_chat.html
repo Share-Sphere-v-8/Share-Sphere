@@ -432,9 +432,7 @@
                 if (data.items.length > 0) {
                 let videoId = data.items[0].id.videoId;
                 console.log(videoId);
-                alert("Process 1 done");
                 const newMsg = push(chatRef);
-                alert("Process 2 done");
                 set(newMsg, {
                 sender: user.email,
                 songurl: videoId,
