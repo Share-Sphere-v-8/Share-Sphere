@@ -170,7 +170,7 @@
             outline: none;
             }
 
-            #submit, #addsong {
+            #submit, #addsong, #addimage {
             padding: 8px 16px;
             border: none;
             border-radius: 8px;
@@ -270,7 +270,9 @@
             <div id = "inputbox">
                 <form id = "input">
                     <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
-                    <buton id = "addsong">Add Song</buton>
+                    <button id = "addsong">Add Song</button>
+                    <input type = "file" id = "imageinput" style="display:none;">
+                    <button id = "addimage">Add Image</button>
                     <input type = "submit" id = "submit" placeholder = "Send">
                 </form>
             </div>
@@ -349,6 +351,8 @@
             window.location.href = "index.html";
             }
             let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            let useremailSafe = user.email.replace(/\./g, ",");
+            let fndemailSafe = fndemail.replace(/\./g, ",");
             console.log(fndemail);
             let friend = await getDoc(doc(fs, "users", fndemail));
             let fndname = friend.data().username;
@@ -364,8 +368,6 @@
                 e.preventDefault();
                 let text = document.getElementById("text").value;
                 console.log(text);
-                let useremailSafe = user.email.replace(/\./g, ",");
-                let fndemailSafe = fndemail.replace(/\./g, ",");
 
                 let address;
                 if (user.email > fndemail) {
@@ -384,8 +386,6 @@
                 let textdiv = document.getElementById("text");
                 textdiv.value = "";
             });
-            let useremailSafe = user.email.replace(/\./g, ",");
-                let fndemailSafe = fndemail.replace(/\./g, ",");
                 if (user.email > fndemail) {
                     address = `${useremailSafe}_${fndemailSafe}`;
                 } else {
@@ -396,7 +396,6 @@
             let send = document.getElementById("sendsong");
             send.addEventListener("click", async() =>
             {
-                alert("sending");
                 let address;
                 if (user.email > fndemail) {
                     address = `${useremailSafe}_${fndemailSafe}`;
@@ -431,6 +430,45 @@
                 }
             });
 
+            let addimagebtn = document.getElementById("addimage");
+            let imageinput = document.getElementById("imageinput");
+            addimagebtn.addEventListener("click", ()=>
+            {
+                imageinput.click();
+            });
+            imageinput.addEventListener("change", async() =>
+            {
+                let file = imageinput.files[0];
+                if (!file) return alert("No file selected");
+                let filename = `${Date.now()}_${file.name}`;
+                let { data, error } = await supabasec.storage
+                .from('chatimages')
+                .upload(filename, file);
+                if (error)
+                {
+                    alert("Error occured while uploading image, please try again later.");
+                    console.log(error);
+                    return;
+                }
+                let { data: { publicUrl } } = supabasec.storage
+                .from('chatimages')
+                .getPublicUrl(filename);
+                let address;
+                if (user.email > fndemail) {
+                    address = `${useremailSafe}_${fndemailSafe}`;
+                } else {
+                    address = `${fndemailSafe}_${useremailSafe}`;
+                }
+                const chatRef = ref(db, `chats/${address}/messages`);
+                const newMsg = push(chatRef);
+                set(newMsg, {
+                sender: user.email,
+                imageurl: publicUrl,
+                timestamp: Date.now()
+                });
+
+            });
+
             onChildAdded(chatRef, (snapshot) => {
             const msg = snapshot.val();
             if(msg.sender == user.email)
@@ -455,6 +493,15 @@
               src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
                 }
+                if (msg.imageurl)
+                {
+                    sentmessagediv.innerText = "";
+                    let img = document.createElement("img");
+                    img.src = msg.imageurl;
+                    img.style.maxWidth = "200px";
+                    img.style.display = "block";
+                    sentmessagediv.appendChild(img);
+                }
             }
             else{
                 let div = document.createElement("div");
@@ -476,6 +523,15 @@
                 sentmessagediv.innerHTML = `<iframe width="320" height="180" 
               src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
+                }
+                if (msg.imageurl)
+                {
+                    sentmessagediv.innerText = "";
+                    let img = document.createElement("img");
+                    img.src = msg.imageurl;
+                    img.style.maxWidth = "200px";
+                    img.style.display = "block";
+                    sentmessagediv.appendChild(img);
                 }
             }
         });
@@ -521,3 +577,4 @@ async function searchSong() {
     </script>
 </body>
 </html>
+
