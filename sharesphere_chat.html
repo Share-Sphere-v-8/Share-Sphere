@@ -154,6 +154,15 @@
             background: #fff;
             border-top: 1px solid #ccc;
             padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            }
+            #otherfeatures
+            {
+                display: flex;
+                gap: 10px;
             }
 
             #input {
@@ -275,11 +284,13 @@
             <div id = "inputbox">
                 <form id = "input">
                     <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
+                    <input type = "submit" id = "submit" placeholder = "Send">
+                </form>
+                <div id = "otherfeatures">
                     <button id = "addsong">Add Song</button>
                     <input type = "file" id = "imageinput" accept="image/*" style="display:none;">
                     <button id = "addimage">Add Image</button>
-                    <input type = "submit" id = "submit" placeholder = "Send">
-                </form>
+                </div>
             </div>
         </div>
     <div id = "songbox">
