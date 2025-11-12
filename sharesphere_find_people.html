@@ -160,7 +160,7 @@
     </nav>
     <main>
         <div id = "findpeople">
-            <h1>Find friends:-</h1>
+            <h1 id = "findfriends">No one avaialable at this moment:-</h1>
             <div id = "peoplelist">
             </div>
         </div>
@@ -228,13 +228,22 @@
             }
             let useremail = user.email;
             const usercollection = await getDocs(collection(db, "users"));
+            const userdoc = await getDoc(doc(db, "users", useremail));
+            let userdata = userdoc.data();
+            let frieds = userdata.friendlist;
             usercollection.forEach((doc) => {
                 const data = doc.data();
                 const name = data.username;
+                if (frieds.includes(data.email))
+                {
+                    return;
+                }
                 if (data.email === useremail)
                 {
                     return;
                 }
+                let findpeopleheader = document.getElementById("findfriends");
+                findpeopleheader.innerText = "Find people to connect with:";
                 const pfpUrl = data.pfpUrl;
                 const biodata = data.biodata;
                 const fndemail = data.email;
