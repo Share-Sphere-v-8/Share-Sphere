@@ -284,7 +284,7 @@
         }
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, addDoc, getDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, addDoc, getDoc, getDocs, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import {
             getAuth,
             signInWithEmailAndPassword,
@@ -353,7 +353,7 @@
                 let emaildiv = document.getElementById("emailid");
                 emaildiv.innerText = "Your email id:- " + email;
                 let postsdiv = document.getElementById("posts");
-                let postsnapshot = await getDocs(collection(db, "posts"));
+                const postsnapshot = await getDocs (query(collection(db, "posts"), orderBy("timestamp", "desc")));
                 postsnapshot.forEach((doc) => {
                     let postdata = doc.data();
                     if (postdata.email === email)
