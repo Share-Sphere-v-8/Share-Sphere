@@ -378,8 +378,7 @@
                 }
                 let emaildiv = document.getElementById("emailid");
                 emaildiv.innerText = "Email id:- " + email;
-                let postsdiv = document.getElementById("posts");
-                let postsnapshot = await getDocs(collection(db, "posts"));
+                const postsnapshot = await getDocs (query(collection(db, "posts"), orderBy("timestamp", "desc")));
                 postsnapshot.forEach((doc) => {
                     let postdata = doc.data();
                     if (postdata.email === email)
