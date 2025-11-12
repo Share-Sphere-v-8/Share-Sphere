@@ -170,10 +170,10 @@
     </nav>
     <main>
         <div id = "findpeople">
-            <h1>Friend requests</h1>
+            <h1 id = "friendrequest">No friend requests at this moment:</h1>
             <div id = "peoplelist"></div>
             <hr>
-            <h1>Your friends:-</h1>
+            <h1 id = "yourfriends">You aren't having any friends yet:</h1>
             <div id = "friendslist"></div>
         </div>
     </main>
@@ -250,6 +250,8 @@
                     console.error("User doc does not exist for:", fndemail);
                     continue;
                 }
+                let findpeopleheader = document.getElementById("friendrequest");
+                findpeopleheader.innerText = "Friend requests received:-";
                 const fndname = fnddata.data().username || "Unknown User";
                 const fndpfp = fnddata.data().pfpUrl || "default_pfp_url";
                 const fnddiv = document.createElement("div");
@@ -355,6 +357,8 @@
             const friendsemails = friendlst.data().friendlist || [];
             for (const frndemail of friendsemails)
             {
+                let yourfriends = document.getElementById("yourfriends");
+                yourfriends.innerText = "Your friends:-";
                 const frnddata = await getDoc(doc(db, "users", frndemail));
                 const fndemail = frnddata.data().email;
                 const frndname = frnddata.data().username || "Unknown User";
