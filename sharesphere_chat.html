@@ -425,7 +425,7 @@
                 let query = document.getElementById("search").value;
                 if (!query) return alert("Please enter a song name");
 
-                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDE8Cnuzfl8eOwMRCmjW8gsk-5X-86lY8k`;
+                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
                 let response = await fetch(url);
                 let data = await response.json();
 
@@ -573,8 +573,14 @@
             }
         });
         let addsong = document.getElementById("addsong");
+        let songbox = document.getElementById("songbox");
+        songbox.addEventListener("click", (e) => {
+            if (e.target === songbox) {
+                songbox.style.display = "none";
+            }
+        });
         addsong.addEventListener("click", ()=>{
-            let songbox = document.getElementById("songbox");
+
             songbox.style.display = "flex";
         });
         
@@ -591,7 +597,7 @@ async function searchSong() {
       let query = document.getElementById("search").value;
       if (!query) return alert("Please enter a song name");
 
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDE8Cnuzfl8eOwMRCmjW8gsk-5X-86lY8k`;
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
 
       try {
         let response = await fetch(url);
