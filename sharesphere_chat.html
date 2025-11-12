@@ -151,23 +151,27 @@
 
             #inputbox {
             flex-shrink: 0;
+            flex-wrap: wrap;
             background: #fff;
             border-top: 1px solid #ccc;
             padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 5px;
+            max-width: 100%;
             }
             #otherfeatures
             {
                 display: flex;
                 gap: 10px;
+                justify-content: center;
+                align-items: center;
             }
 
             #input {
             display: flex;
-            width: 100%;
+            flex: 1;
             gap: 10px;
             }
 
@@ -284,7 +288,7 @@
             <div id = "inputbox">
                 <form id = "input">
                     <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
-                    <input type = "submit" id = "submit" placeholder = "Send">
+                    <input type = "submit" id = "submit" placeholder = "Send" value = "Send">
                 </form>
                 <div id = "otherfeatures">
                     <button id = "addsong">Add Song</button>
@@ -577,10 +581,11 @@
         songbox.addEventListener("click", (e) => {
             if (e.target === songbox) {
                 songbox.style.display = "none";
+                document.getElementById("player").innerHTML = "";
+                document.getElementById("search").value = "";
             }
         });
         addsong.addEventListener("click", ()=>{
-
             songbox.style.display = "flex";
         });
         
