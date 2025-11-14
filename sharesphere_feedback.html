@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
     <title>Share Sphere - Feedback</title>
-    <link rel="icon" href = "#">
+    <link rel="icon" href = "logo.jpg" type = "image/x-icon">
     <style>
         body{
             background-color: #aff0e3;
@@ -331,13 +331,13 @@
                 })
                 .then(() => {
                     alert("Thank you from team Share-Sphere for your valueable feedback!");
+                    form.reset();
+                    window.location.href = "sharesphere_public_page.html";
                 })
                 .catch((error) => {
                         alert ("Error Occured in sending data! Please retry");
                         console.log(error);
                 });
-                form.reset();
-                window.location.href = "sharesphere_public_page.html";
             }
             asu.style.display = "none";
             asi.style.display = "none";
