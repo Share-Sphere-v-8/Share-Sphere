@@ -374,16 +374,15 @@
             window.location.href = "index.html";
             }
             let roomid = new URLSearchParams(window.location.search).get("roomid");
-            console.log(roomid);
-            console.log(roomid);
             let room = await getDoc(doc(fs, "rooms", roomid));
+            let roomdescription = room.data().room_description;
             let roomidSafe = roomid.replace(/[.#$[\]/]/g, '_');
             let useremailSafe = user.email.replace(/[.#$[\]/]/g, '_');
             let roomname = room.data().room_name;
             let roomnamediv = document.getElementById("roomname");
-            roomnamediv.innerText = roomname;
+            roomnamediv.innerText = roomid;
             let roomiddiv = document.getElementById("roomid");
-            roomiddiv.innerText = roomid;
+            roomiddiv.innerText = roomdescription;
             let inputform = document.getElementById("input");
             let text = document.getElementById("text").value;
             let address = roomidSafe;
