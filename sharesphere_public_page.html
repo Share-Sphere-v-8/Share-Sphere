@@ -103,33 +103,76 @@
             background: #ffddd2;
             color: #006d77;
         }
-        #hp
-        {
+        #Pn {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #addfiles {
+            position: relative;
+            background-color: #e29578;
+            border: 2px solid #e29500;
+        }
+
+        #hp {
             font-size: 1.5rem;
-            font-weight: bolder;
-            margin: 10px;
+            font-weight: bold;
+            color: #006d77;
+            margin: 20px 0;
+            text-align: center;
         }
-        #posts
-        {
+
+        #posts {
             display: flex;
-            flex-direction: row;
             flex-wrap: wrap;
-            gap: 10px;
             justify-content: center;
-            align-items: center;
-            margin: 10px;
+            gap: 20px;
+            padding: 20px;
         }
-        #more
-        {
-            display: none;
-            background-color: transparent;
-            color: white;
-            font-size: 1.8rem;
+
+        .post-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            font-family: 'Arial', sans-serif;
         }
-        #posts
-        {
-            display: flex;
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+
+        .post-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .post-card .username {
+            font-weight: bold;
+            color: #006d77;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .post-card .caption {
+            color: #555;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .post-card .likes {
+            color: #888;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
         #largepost
         {
             position: fixed;
@@ -146,7 +189,14 @@
             max-height: 90vh;
             overflow: auto;
         }
-         @media (min-width: 751px) {
+        #more
+        {
+            display: none;
+            background-color: transparent;
+            color: white;
+            font-size: 1.8rem;
+        }
+         @media (min-width: 851px) {
             #auth-buttons {
                 flex-direction: row;
                 gap: 1rem;
@@ -164,7 +214,7 @@
                 margin: 2px;
             }
         }
-        @media (max-width: 750px) {
+        @media (max-width: 850px) {
             #desktop-nav {
                 display: none;
             }
@@ -189,7 +239,6 @@
             </div>
             <button id = "more">&#9776;</button>
             <div id="desktop-nav">
-                <a href="index.html">Home</a>
                 <a href="sharesphere_your_account.html">Your Account</a>
                 <a href="sharesphere_find_people.html">Find friends</a>
                 <a href ="sharesphere_friends.html">My friends</a>
@@ -299,38 +348,23 @@
                 }
 
                 const postDiv = document.createElement("div");
-                postDiv.style.display = "flex";
-                postDiv.style.flexDirection = "column";
-                postDiv.style.alignItems = "center";
-                postDiv.style.border = "1px solid #ccc";
-                postDiv.style.borderRadius = "10px";
-                postDiv.style.padding = "10px";
-                postDiv.style.width = "200px";
-                postDiv.style.backgroundColor = "#f9f9f9";
-                postDiv.style.margin = "10px";
+                postDiv.className = "post-card";
 
                 const img = document.createElement("img");
                 img.src = imgSrc;
                 img.alt = "Post Image";
-                img.style.width = "100%";
-                img.style.borderRadius = "8px";
 
                 const userDiv = document.createElement("div");
+                userDiv.className = "username";
                 userDiv.textContent = username;
-                userDiv.style.marginTop = "8px";
-                userDiv.style.fontWeight = "bold";
-                userDiv.style.fontFamily = "Arial, sans-serif";
-                userDiv.style.textAlign = "center";
 
                 const captionDiv = document.createElement("div");
+                captionDiv.className = "caption";
                 captionDiv.textContent = caption;
-                captionDiv.style.marginTop = "4px";
-                captionDiv.style.fontFamily = "Arial, sans-serif";
-                captionDiv.style.color = "#555";
 
                 const likes = document.createElement("div");
+                likes.className = "likes";
                 likes.textContent = `Likes: ${postData.likes || 0}`;
-                likes.style.marginTop = "4px";
 
                 postDiv.addEventListener("click", () => {
                     const largePost = document.getElementById("largepost");
