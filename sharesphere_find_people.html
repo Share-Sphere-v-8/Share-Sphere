@@ -104,6 +104,18 @@
             flex-direction: column;
             
         }
+        #viewfriends
+        {
+            display: block;
+            margin: 1rem auto;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #006d77;
+            color: #edf6f9;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
          @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -147,8 +159,7 @@
             </div>
             <button id = "more">&#9776;</button>
             <div id="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="sharesphere_public_page.html">Home</a>
                 <a href="sharesphere_your_account.html">Your account</a>
                 <a href="sharesphere_feedback.html">Feedback</a>
             </div>
@@ -159,6 +170,7 @@
         </div>
     </nav>
     <main>
+        <button id = "viewfriends" onclick="window.location.href='sharesphere_friends.html'">View my friends</button>
         <div id = "findpeople">
             <h1 id = "findfriends">No one avaialable at this moment:-</h1>
             <div id = "peoplelist">
@@ -234,10 +246,6 @@
             usercollection.forEach((doc) => {
                 const data = doc.data();
                 const name = data.username;
-                if (frieds.includes(data.email))
-                {
-                    return;
-                }
                 if (data.email === useremail)
                 {
                     return;
@@ -281,6 +289,10 @@
 
                 const namediv = document.createElement("div");
                 namediv.innerText = name;
+                if (frieds.includes(data.email))
+                {
+                    namediv.innerText += " (Friend)";
+                }
                 namediv.style.marginLeft = "1rem";
                 namediv.style.fontSize = "1.2rem";
                 namediv.style.fontWeight = "bold";
@@ -339,7 +351,6 @@
                 
             });
         });
-        generateprofiles();
     </script>
 </body>
 </html>
