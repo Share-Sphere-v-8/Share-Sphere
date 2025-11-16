@@ -11,6 +11,7 @@
             padding: 0;
             font-family:Tahoma;
             background-color: #edf6f9;
+            text-align: center;
         }
         h1{
             text-align: center;
@@ -114,6 +115,17 @@
             flex-wrap: wrap;
             flex-direction: column;
         }
+        #viewfindpeople
+        {
+            margin: 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            background-color: #00b4d8;
+            color: #edf6f9;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
          @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -157,9 +169,9 @@
             </div>
             <button id = "more">&#9776;</button>
             <div id="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="sharesphere_public_page.html">Home</a>
                 <a href="sharesphere_your_account.html">Your account</a>
+                <a href="sharesphere_find_people.html">Find other friends</a>
                 <a href="sharesphere_feedback.html">Feedback</a>
             </div>
 
@@ -169,6 +181,7 @@
         </div>
     </nav>
     <main>
+        <button id = "viewfindpeople" onclick="window.location.href='sharesphere_find_people.html'">Find people to add as friends</button>
         <div id = "findpeople">
             <h1 id = "friendrequest">No friend requests at this moment:</h1>
             <div id = "peoplelist"></div>
@@ -253,7 +266,7 @@
                 let findpeopleheader = document.getElementById("friendrequest");
                 findpeopleheader.innerText = "Friend requests received:-";
                 const fndname = fnddata.data().username || "Unknown User";
-                const fndpfp = fnddata.data().pfpUrl || "default_pfp_url";
+                const fndpfp = fnddata.data().pfpUrl || "https://i.pinimg.com/474x/15/0f/a8/150fa8800b0a0d5633abc1d1c4db3d87.jpg?nii=t";
                 const fnddiv = document.createElement("div");
                 fnddiv.style.display = "flex";
                 fnddiv.style.justifyContent = "flex-start";
@@ -362,7 +375,7 @@
                 const frnddata = await getDoc(doc(db, "users", frndemail));
                 const fndemail = frnddata.data().email;
                 const frndname = frnddata.data().username || "Unknown User";
-                const frndpfp = frnddata.data().pfpUrl;
+                const frndpfp = frnddata.data().pfpUrl || "https://i.pinimg.com/474x/15/0f/a8/150fa8800b0a0d5633abc1d1c4db3d87.jpg?nii=t";
                 const biodata = frnddata.data().biodata || "No biodata available";
                 const frnddiv = document.createElement("div");
                 frnddiv.style.display = "flex";
