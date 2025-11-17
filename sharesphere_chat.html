@@ -490,7 +490,7 @@
 
             });
 
-            onChildAdded(chatRef, (snapshot) => {
+            onChildAdded(chatRef, async (snapshot) => {
             const msg = snapshot.val();
             if(msg.sender == user.email)
             {
@@ -513,6 +513,20 @@
                 sentmessagediv.innerHTML = `<iframe width="320" height="180" 
               src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
+              let playable = await isPlayable(msg.songurl);
+
+      if (!playable) {
+        // If unplayable, show redirect link instead of an iframe
+        sentmessagediv.innerHTML = `
+          <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; background-color: #f8f8f8">
+            Click below to view the video!<br>
+            <a href="https://www.youtube.com/watch?v=${msg.songurl}" target="_blank" style="color: blue; text-decoration: underline;">
+              Click here to view the song on YouTube
+            </a>
+          </div>
+        `;
+        return;
+      }
                 }
                 if (msg.imageurl)
                 {
@@ -550,6 +564,20 @@
                 sentmessagediv.innerHTML = `<iframe width="320" height="180" 
               src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
+              let playable = await isPlayable(msg.songurl);
+
+      if (!playable) {
+        // If unplayable, show redirect link instead of an iframe
+        sentmessagediv.innerHTML = `
+          <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; background-color: #f8f8f8">
+            Click below to view the video!<br>
+            <a href="https://www.youtube.com/watch?v=${msg.songurl}" target="_blank" style="color: blue; text-decoration: underline;">
+              Click here to view the song on YouTube
+            </a>
+          </div>
+        `;
+        return;
+      }
                 }
                 if (msg.imageurl)
                 {
@@ -595,33 +623,100 @@
             let lgimg = document.getElementById("largeimage");
             lgimg.src = "";
         });
+        async function isPlayable(videoId) {
+  const url = `https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&hl=en`;
+
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+
+    const params = new URLSearchParams(text);
+    const playerResponse = JSON.parse(params.get("player_response"));
+
+    if (playerResponse.playabilityStatus.status === "OK") {
+      return true;
+    } else {
+      console.log("Not playable:", playerResponse.playabilityStatus.reason);
+      return false;
+    }
+  } catch (err) {
+    console.error("Failed to check playability:", err);
+    return false;
+  }
+}
     </script>
     <script>
 async function searchSong() {
-      let query = document.getElementById("search").value;
-      if (!query) return alert("Please enter a song name");
+  let query = document.getElementById("search").value;
+  if (!query) return alert("Please enter a song name");
 
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
+  let apiKey = "AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ";
 
-      try {
-        let response = await fetch(url);
-        let data = await response.json();
+  let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=${apiKey}`;
 
-        if (data.items.length > 0) {
-          let videoId = data.items[0].id.videoId;
-          document.getElementById("player").innerHTML =
-            `<iframe width="160" height="90" 
-              src="https://www.youtube.com/embed/${videoId}?autoplay=1"
-              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
-        } else {
-          alert("No video found");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Error fetching YouTube data");
+  try {
+    let response = await fetch(url);
+    let data = await response.json();
+
+    if (data.items.length > 0) {
+      let videoId = data.items[0].id.videoId;
+
+      // Check if video can be played in iframe
+      let playable = await isPlayable(videoId);
+
+      if (!playable) {
+        // If unplayable, show redirect link instead of an iframe
+        document.getElementById("player").innerHTML = `
+          <div style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; background-color: #f8f8f8">
+            Click below to view the video!<br>
+            <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" style="color: blue; text-decoration: underline;">
+              Click here to view the song on YouTube
+            </a>
+          </div>
+        `;
+        return;
       }
+
+      // If playable, embed the video
+      document.getElementById("player").innerHTML = `
+        <iframe width="160" height="90"
+          src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      `;
+    } else {
+      alert("No video found");
     }
+  } catch (err) {
+    console.error(err);
+    alert("Error fetching YouTube data");
+  }
+}
+
+// Function to check if video is playable in an iframe
+async function isPlayable(videoId) {
+  const url = `https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&hl=en`;
+
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+
+    const params = new URLSearchParams(text);
+    const playerResponse = JSON.parse(params.get("player_response"));
+
+    if (playerResponse.playabilityStatus.status === "OK") {
+      return true;
+    } else {
+      console.log("Not playable:", playerResponse.playabilityStatus.reason);
+      return false;
+    }
+  } catch (err) {
+    console.error("Failed to check playability:", err);
+    return false;
+  }
+}
+
     </script>
 </body>
 </html>
+
 
