@@ -6,15 +6,16 @@
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
     <title>Share Sphere - Public Page</title>
     <style>
-         body {
+        body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             background-attachment: fixed;
             text-align: center;
             min-height: 100vh;
             position: relative;
+            color: #333;
         }
 
         body::before {
@@ -24,9 +25,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="3" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="4" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="90" r="2" fill="rgba(255,255,255,0.08)"/><circle cx="90" cy="10" r="2" fill="rgba(255,255,255,0.08)"/></svg>') repeat;
             pointer-events: none;
             z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #navbar {
@@ -75,7 +81,7 @@
         }
 
         #desktop-nav a:hover {
-            color: #ffddd2;
+            color: #aff0e3;
         }
 
         #auth-buttons {
@@ -97,49 +103,46 @@
         }
 
         #logout:hover {
-            background: #ffddd2;
-            color: #006d77;
-        }
-
-        #addfiles {
-            position: block;
-            background: #e29578;
-            border: 2px solid #e29578;
-            color: #edf6f9;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.2s ease;
-            font-weight: bolder;
-            margin: 4px;
-        }
-
-        #addfiles:hover {
-            background: #ffddd2;
-            color: #006d77;
-        }
-        #Pn {
-            text-align: center;
-            margin: 20px 0;
+            background: #ff0000;
+            color: #ffffff;
         }
 
         #addfiles {
             position: relative;
-            background-color: #e29578;
-            border: 2px solid #e29500;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin: 20px;
+            box-shadow: 0 8px 20px rgba(255,107,107,0.3);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #addfiles:hover {
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,107,107,0.4);
+        }
+
+        #Pn {
+            text-align: center;
+            margin: 30px 0;
         }
 
         #hp {
             font-size: 3rem;
             font-weight: bold;
-            color: #ffffff;
+            color: #006d77;
             margin: 50px 0 40px 0;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            background: linear-gradient(45deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
-            
-            background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
+            animation: glow 2s infinite alternate;
         }
 
         @keyframes glow {
@@ -148,72 +151,90 @@
         }
 
         #posts {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
             justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            align-items: start;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
         }
 
         .post-card {
-            background: linear-gradient(145deg, #ffffff, #f8f9fa);
-            border: none;
-            border-radius: 20px;
-            padding: 20px;
-            width: 280px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s ease;
+            background: linear-gradient(145deg, #ffffff, #f0f8ff);
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
         }
 
         .post-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255,255,255,0.8);
+            border-color: #667eea;
         }
 
         .post-card img {
             width: 100%;
-            height: 200px;
+            height: 220px;
             object-fit: cover;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease;
+            background: linear-gradient(45deg, #f0f8ff, #e6f3ff);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .post-card:hover img {
-            transform: scale(1.05);
+            transform: scale(1.08) rotate(1deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .post-card .username {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 8px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
         .post-card .caption {
-            color: #7f8c8d;
-            margin-bottom: 15px;
+            color: #555;
+            margin-bottom: 20px;
             text-align: center;
             font-style: italic;
+            font-size: 1rem;
+            line-height: 1.4;
         }
 
         .post-card .likes {
-            color: #e74c3c;
-            font-size: 1rem;
+            color: #ff6b6b;
+            font-size: 1.1rem;
             text-align: center;
-            font-weight: bold;
+            font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 0 auto;
+            width: fit-content;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
         .post-card .likes::before {
-            content: '❤️';
-            font-size: 1.2rem;
+            content: '💖';
+            font-size: 1.3rem;
         }
 
         #largepost {
@@ -238,6 +259,57 @@
             background-color: transparent;
             color: white;
             font-size: 1.8rem;
+        }
+        #loading
+        {
+            position: fixed;
+            margin: 0%;
+            padding: 0%;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+        }
+        #helpbox
+        {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        #helpbut
+        {
+            position: fixed;
+            top: 100px;
+            right: 5px;
+            background-color: #00b4d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+
+        }
+        #close
+        {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555555;
+            cursor: pointer;
         }
          @media (min-width: 851px) {
             #auth-buttons {
@@ -304,6 +376,50 @@
             © 2025 Share Sphere - Copyrights reserved 
         </footer>
     </main>
+    <div id = "loading">
+        <img src = "loading.gif">
+    </div>
+    <button id = "helpbut">Chat laguage help!</button>
+    <div id="helpbox">
+    <h2>Chat short forms</h2>
+
+    <div class="item"><b>LOL:</b> Laugh Out Loud</div>
+    <div class="item"><b>LMAO:</b> Laughing My Ass Off</div>
+    <div class="item"><b>ROFL:</b> Rolling On the Floor Laughing</div>
+    <div class="item"><b>BRB:</b> Be Right Back</div>
+    <div class="item"><b>BTW:</b> By The Way</div>
+    <div class="item"><b>OMG:</b> Oh My God</div>
+    <div class="item"><b>IDK:</b> I Don’t Know</div>
+    <div class="item"><b>IKR:</b> I Know, Right?</div>
+    <div class="item"><b>IMO:</b> In My Opinion</div>
+    <div class="item"><b>TBH:</b> To Be Honest</div>
+    <div class="item"><b>TTYL:</b> Talk To You Later</div>
+    <div class="item"><b>DM:</b> Direct Message</div>
+    <div class="item"><b>RN:</b> Right Now</div>
+    <div class="item"><b>TMI:</b> Too Much Information</div>
+    <div class="item"><b>SMH:</b> Shaking My Head</div>
+    <div class="item"><b>FR:</b> For Real</div>
+    <div class="item"><b>FOMO:</b> Fear Of Missing Out</div>
+    <div class="item"><b>POV:</b> Point Of View</div>
+    <div class="item"><b>FTW:</b> For The Win</div>
+    <div class="item"><b>NGL:</b> Not Gonna Lie</div>
+    <div class="item"><b>ICYMI:</b> In Case You Missed It</div>
+    <div class="item"><b>GOAT:</b> Greatest Of All Time</div>
+    <div class="item"><b>BFF:</b> Best Friends Forever</div>
+    <div class="item"><b>SUS:</b> Suspicious / Suspect</div>
+    <div class="item"><b>W / L:</b> Winning / Losing</div>
+    <div class="item"><b>YEET:</b> Throw / Excitement</div>
+    <div class="item"><b>CAP / NO CAP:</b> Lie / No Lie</div>
+    <div class="item"><b>AF:</b> Slang (very)</div>
+    <div class="item"><b>FYP:</b> For You Page</div>
+    <div class="item"><b>WYD:</b> What You Doing?</div>
+    <div class="item"><b>XOXO:</b> Hugs and Kisses</div>
+    <div class="item"><b>GRWM:</b> Get Ready With Me</div>
+    <div class="item"><b>OOTD:</b> Outfit Of The Day</div>
+
+    <div id = "close">Click anywhere in the box to close</div>
+
+</div>
     <div id = "largepost"></div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module">
@@ -335,6 +451,8 @@
         const db = getFirestore(app);
         const auth = getAuth();
 
+        const loading = document.getElementById("loading");
+
         more.addEventListener("click", moreclicked);
         function moreclicked()
         {
@@ -358,6 +476,17 @@
             });
         }
 
+        let helpbut = document.getElementById("helpbut");
+        let helpbox = document.getElementById("helpbox");
+        helpbut.addEventListener("click", () =>
+        {
+            helpbox.style.display = "block";
+        });
+        helpbox.addEventListener("click", () =>
+        {
+            helpbox.style.display = "none";
+        });
+
         let addbtn = document.getElementById("addfiles");
         addbtn.addEventListener("click", postimage);
 
@@ -376,6 +505,10 @@
             let i = 0;
 
             while (i < postsArray.length) {
+                if (i>6)
+            {
+                loading.style.display = "none";
+            }
                 const postDoc = postsArray[i];
                 const postData = postDoc.data();
 
@@ -504,5 +637,38 @@
 
         
     </script>
+    <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000"; 
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </body>
 </html>
