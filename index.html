@@ -104,10 +104,10 @@
         border-radius: 5px;
     }
 
-    #logout:hover {
-        background: #ffddd2;
-        color: #006d77;
-    }
+        #logout:hover {
+            background: #ff0000;
+            color: #ffffff;
+        }
     #more
     {
         display: none;
@@ -141,7 +141,7 @@
 
     
     #profile {
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
       margin-top: 30px;
@@ -250,6 +250,9 @@
     <button class="launch-btn" id="signin-btn">Sign In</button>
     <button class="launch-btn" id="signup-btn">Sign Up</button>
   </div>
+  <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
   <script type = "module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
@@ -337,6 +340,7 @@
     }
 
       async function fetchUserData() {
+        let profile = document.getElementById("profile");
           let pfp = document.getElementById("pfp");
           let profileName = document.getElementById("profile-name");
           let auth =  await getAuth();
@@ -362,6 +366,7 @@
               } else {
                   profileName.textContent = email;
               }
+                profile.style.display = "flex";
           } else {
               pfp.style.display = "none";
               profileName.style.display = "none";
@@ -373,6 +378,39 @@
     });
       
   </script>
+  <script>
+      testSpeed();
+async function testSpeed() {
+  const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+  const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+  const startTime = performance.now();
+
+  try {
+      const response = await fetch(fileUrl, { cache: "no-store" });
+      await response.blob(); // Wait for file to fully download
+  } catch (e) {
+      alert("Connect to a better internet connection to continue using our application");
+      window.location.href = "index.html";
+  }
+
+  const endTime = performance.now();
+  const durationInSeconds = (endTime - startTime) / 1000;
+
+  const speedBps = fileSize / durationInSeconds;        // bytes per second
+  const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+  if (speedMbps < 0.1)
+  {
+      alert("Connect to a better internet connection to continue using our application");
+      window.location.href = "index.html";
+  }
+  else if (speedMbps < 0.5)
+  {
+      alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+  }
+}
+</script>
 </body>
 </html>
 
