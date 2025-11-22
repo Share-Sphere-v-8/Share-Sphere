@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
     <title>Share Sphere - Create room!</title>
-    <link rel="icon" href = "logo.jpg">
+    <link rel="icon" href = "#">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body{
             background-color: #aff0e3;
@@ -14,42 +15,53 @@
             padding: 0;
         }
         form{
-            background-color: #ECE4B7;
-            width: 50%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            width: 60%;
+            max-width: 600px;
             margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             font-size: larger;
             font-weight: bold;
             display: flex;
             flex-direction: column;
+            border: 1px solid #e9ecef;
         }
-        #form input 
+        #form input
         {
-            padding: 10px;
-            margin: 10px 0;
-            border: 3px dashed #7DCFB6;
-            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
             font-size: medium;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #form input:focus {
+            border-color: #7DCFB6;
+            box-shadow: 0 0 5px rgba(125, 207, 182, 0.5);
+            outline: none;
         }
         h1, h2{
             text-align: center;
         }
         #submit
         {
-            background-color: #FC9F5B;
+            background: linear-gradient(135deg, #FC9F5B 0%, #e29578 100%);
             color: white;
             border: none;
-            padding: 10px;
+            padding: 15px 30px;
             border-radius: 25px;
             cursor: pointer;
             font-size: large;
             font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            align-self: center;
         }
         #submit:hover
         {
-            background-color: #7dcfb6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         #logo
         {
@@ -148,10 +160,10 @@
             font-size: 1rem;
             border-radius: 5px;
         }
-        #asu:hover, #logout:hover {
-            background: #ffddd2;
-            color: #006d77;
-        }
+    #asu:hover, #logout:hover {
+        background: #ff0000;
+        color: #ffffff;
+    }
         #more
         {
             display: none;
@@ -196,6 +208,18 @@
             margin-top: 15px;
             margin-bottom: 15px;
         }
+        #loading
+        {
+            position: fixed;
+            display: none;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(255, 255, 255);
+            z-index: 1000;
+            text-align: center;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -232,6 +256,9 @@
     </style>
 </head>
 <body>
+    <div id = "loading">
+        <img src = "loading.gif">
+    </div>
     <nav id="navbar">
         <div id="nav-container">
             <div id="name">
@@ -244,6 +271,7 @@
                 <a href = "sharesphere_friends.html">My friends</a>
                 <a href ="sharesphere_find_rooms.html">Join room</a>
                 <a href="sharesphere_about_us.html">About us </a>
+                <a href="sharesphere_feedback.html">Feedback</a>
             </div>
 
             <div id="auth-buttons">
@@ -254,11 +282,7 @@
             
         </div>
     </nav>
-    <h1>Share Sphere - Create a room</h1>
-    <div id = "userinfo">
-        <img src="#" alt="Share -Spher - Logo" id = "logo">
-        <div id = "username">Your username will be shown over here</div>
-    </div>
+    <h1><i class="fas fa-users-cog"></i> Share Sphere - Create a room</h1>
     
     <form id = "form">
         <br>
@@ -266,9 +290,12 @@
         <input placeholder  = "Room name" name="comments" id = "roomname" required>
         <input type = "text" placeholder="Room description" id = "roomd">
         <br>
-        <button type="submit" id = "submit">Submit</button>
+        <button type="submit" id = "submit"><i class="fas fa-plus"></i> Submit</button>
 </form>
 <button id='createbtn' onclick='window.location.href="sharesphere_find_rooms.html"'>Join a room</button>
+<footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
 <script type ="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
@@ -343,9 +370,13 @@
             form.addEventListener("submit", (e)=> formsubmit(e));
             function formsubmit(e)
             {
+                let submit = document.getElementById("submit");
+                submit.disabled = true;
                 e.preventDefault();
                 let roomname = document.getElementById("roomname").value;
                 let roomd = document.getElementById("roomd").value;
+                let loading = document.getElementById("loading");
+                loading.style.display = "block";
                 setDoc(doc(db, "rooms", roomname), {
                     created_by: user.email,
                     room_name: roomname,
@@ -354,11 +385,13 @@
                 .then(() => {
                     alert("Room created succesfully!");
                     form.reset();
+                    loading.style.display = "none";
                     window.location.href = "sharesphere_public_page.html";
                 })
                 .catch((error) => {
                         alert ("Error Occured on creating room! Please retry");
                         console.log(error);
+                        loading.style.display = "none";
                 });
                 
             }
@@ -366,22 +399,7 @@
             asi.style.display = "none";
             logout.style.display = "block";
             let logo = document.getElementById("logo");
-            if (user) {
-                let email = user.email;
-                let username_pfp = await getDoc(doc(db, "users", email));
-                let pfpUrl = username_pfp.data().pfpUrl;
-                let username = username_pfp.data().username;
-                let usernameDiv = document.getElementById("username");
-                usernameDiv.innerText = username;
-                console.log("Username data filled up");
-                if (pfpUrl) {
-                    logo.src = pfpUrl;
-                } else {
-                    logo.src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-image-gray-blank-silhouette-vector-illustration-305503988.jpg";
-                }
-            } else {
-                logo.src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-image-gray-blank-silhouette-vector-illustration-305503988.jpg";
-            }
+
         }
         else
         {
@@ -403,6 +421,39 @@
             }
         }); 
 
+</script>
+<script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
 </script>
 </body>
 </html>
