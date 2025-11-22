@@ -4,78 +4,95 @@
         <link rel="icon" href = "logo.jpg" type = "image/x-icon">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
             body {
                 text-align: center;
-                background: linear-gradient(to bottom, #edf6f9, #ffffff);
+                background: linear-gradient(135deg, #aff0e3 0%, #edf6f9 100%);
+                font-family: 'Trebuchet MS';
                 margin: 0px;
                 padding: 0px;
             }
             h1 {
                 text-align: center;
-            }
-            input {
-                position: relative;
-                font-size: large;
-                height: 50px;
-                width: 100%;
-                border-radius: 5px;
-                border: 2px dashed #006d77;
-                background-color: #edf6f9;
-            }
-            input:hover {
-                background-color: #aff0e3;
-                transform: scale(1.07);
-            }
-            #signup-form {
-                position: relative;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                flex-direction: column;
-                padding: 0px;
-                margin: 0px;
-            }
-            #submit {
-                font-size: 30px;
-                color: black;
-                border-radius: 80px;
-                height: 40px;
-                background-color: transparent;
-                font-family: 'Lobster';
-                border: 2px solid black;
-            }
-            #submit:hover {
-                background-color: #ffddd2;
                 color: #006d77;
-                transform: scale(1.2);
-                border: 3px solid #00b4d8;
-            }
-            #submit:active {
-                color: red;
+                margin-top: 50px;
             }
             #box {
-                width: fit-content;
-                display: inline-flex;
-                align-items: center;
-                border: 8px outset #e29578;
-                text-align: center;
-                padding: 5%;
-                font-weight: bolder;
-                border-radius: 8px;
-                background-color: #fdfcdc;
+                width: 60%;
+                max-width: 500px;
+                margin: auto;
+                padding: 40px;
+                border-radius: 20px;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                border: 1px solid #e9ecef;
+                display: flex;
                 flex-direction: column;
+                align-items: center;
             }
-            #googlebut {
-                margin: 8px;
+            #signup-form {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
-            h1, h2, h3 {
-                font-family: 'Playfair Display', serif;
+            .input-container {
+                position: relative;
+                width: 100%;
+                margin: 15px 0;
             }
-            a
-            {
+            input {
+                width: 100%;
+                padding: 15px 15px 15px 50px;
+                border: 2px solid #ced4da;
+                border-radius: 10px;
+                font-size: medium;
+                background-color: #ffffff;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            input:focus {
+                border-color: #7DCFB6;
+                box-shadow: 0 0 5px rgba(125, 207, 182, 0.5);
+                outline: none;
+            }
+            .input-container i {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6c757d;
+                font-size: 18px;
+            }
+            #submit {
+                background: linear-gradient(135deg, #FC9F5B 0%, #e29578 100%);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: large;
+                font-weight: bold;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                margin-top: 20px;
+                width: 100%;
+                max-width: 200px;
+            }
+            #submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            h2 {
+                color: #006d77;
+                margin-bottom: 30px;
+            }
+            a {
                 color: #e29578;
+                text-decoration: none;
+                margin-top: 20px;
+            }
+            a:hover {
+                text-decoration: underline;
             }
         </style>
     </head>
@@ -91,10 +108,13 @@
                     <input type = "password" id = "password" name = "password" placeholder = "Password" required>
                 </div><br>
                 <br><br>
-                <input type="submit" id = "submit"><br>
-                <div id ="dontacc"><a href = "sharesphere_sign_up.html">Don't have an account? Click here to sign up</a></div>
+                <input type="submit" id = "submit" value="Sign In">
+                <div id ="dontacc" style="margin-top: 20px;"><a href = "sharesphere_sign_up.html">Don't have an account? Click here to sign up</a></div>
             </form>
         </div>
+        <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
     </body>
     <script type="module">
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
@@ -149,6 +169,39 @@
             if (user) {
                 window.location.href = "sharesphere_public_page.html"
             }
-        });0
+        });
       </script>
+      <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </html>
