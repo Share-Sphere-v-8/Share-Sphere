@@ -4,79 +4,100 @@
         <link rel="icon" href = "logo.jpg" type = "image/x-icon">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <style>
             body {
                 text-align: center;
-                background: linear-gradient(to bottom, #edf6f9, #ffffff);
+                background: linear-gradient(135deg, #aff0e3 0%, #edf6f9 100%);
+                font-family: 'Trebuchet MS';
                 margin: 0px;
                 padding: 0px;
-                font-family: 'Libre Baskerville', 'serif';
             }
             h1 {
                 text-align: center;
-            }
-            input {
-                position: relative;
-                font-size: large;
-                height: 50px;
-                width: 100%;
-                border-radius: 5px;
-                border: 2px dashed #006d77;
-                background-color: #edf6f9;
-            }
-            input:hover {
-                background-color: #aff0e3;
-                transform: scale(1.07);
-            }
-            #signup-form {
-                position: relative;
-                display: inline-flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;
-                flex-direction: column;
-                padding: 0px;
-                margin: 0px;
-            }
-            #submit {
-                font-size: 30px;
-                color: balck;
-                border-radius: 80px;
-                height: 40px;
-                background-color: transparent;
-                border: 2px solid black;
-            }
-            #submit:hover {
-                background-color: #ffddd2;
                 color: #006d77;
-                transform: scale(1.1) ;
-                border: 3px solid #00b4d8;
-            }
-            #submit:active {
-                color: red;
+                margin-top: 50px;
             }
             #box {
-                width: fit-content;
-                display: inline-flex;
-                align-items: center;
-                border: 8px outset #e29578;
-                text-align: center;
-                padding: 2rem;
-                font-weight: bolder;
-                border-radius: 8px;
-                background-color: #fdfcdc;
-            }
-            h1, h2, h3 {
-                font-family: 'Playfair Display', serif;
-            }
-            #dob
-            {
+                width: 60%;
+                max-width: 500px;
+                margin: auto;
+                padding: 40px;
+                border-radius: 20px;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                border: 1px solid #e9ecef;
                 display: flex;
                 flex-direction: column;
+                align-items: center;
             }
-            a
-            {
+            #signup-form {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .input-container {
+                position: relative;
+                width: 100%;
+                margin: 15px 0;
+            }
+            input {
+                width: 100%;
+                padding: 15px 15px 15px 50px;
+                border: 2px solid #ced4da;
+                border-radius: 10px;
+                font-size: medium;
+                background-color: #ffffff;
+                transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            input:focus {
+                border-color: #7DCFB6;
+                box-shadow: 0 0 5px rgba(125, 207, 182, 0.5);
+                outline: none;
+            }
+            .input-container i {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #6c757d;
+                font-size: 18px;
+            }
+            #submit {
+                background: linear-gradient(135deg, #FC9F5B 0%, #e29578 100%);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: large;
+                font-weight: bold;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                margin-top: 20px;
+                width: 100%;
+                max-width: 200px;
+            }
+            #submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+            h2 {
+                color: #006d77;
+                margin-bottom: 30px;
+            }
+            a {
                 color: #e29578;
+                text-decoration: none;
+                margin-top: 20px;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            #dobtext {
+                color: #6c757d;
+                font-size: small;
+                margin-bottom: 5px;
             }
         </style>
     </head>
@@ -105,10 +126,13 @@
                     <input type = "password" id = "passwordconfirm" name = "password" placeholder = "Confirm Password" required>
                 </div>
                 <br><br>
-                <input type = "submit" id = "submit"><br>
-                <div id ="alreadyacc"><a href = "sharesphere_sign_in.html">Already have an account? Click here to Sign in</a></div>
+                <input type = "submit" id = "submit" value="Sign Up">
+                <div id ="alreadyacc" style="margin-top: 20px;"><a href = "sharesphere_sign_in.html">Already have an account? Click here to Sign in</a></div>
             </form>
         </div>
+        <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
     </body>
     <script type="module">
         
@@ -142,6 +166,8 @@
         let submit = document.getElementById("signup-form")
         submit.addEventListener ("submit", signup);
         function signup(event){
+            let submut = document.getElementById("submit");
+            submut.disabled = true;
             event.preventDefault();
             let fullname = document.getElementById("fullname").value;
             let email = document.getElementById("email").value;
@@ -183,5 +209,5 @@
             }
         }
         
-      </script>
+    </script>
 </html>
