@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Share Sphere - Edit Profile</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family:Tahoma;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #edf6f9;
         }
         h1 {
@@ -84,8 +85,8 @@
         }
 
         #logout:hover {
-            background: #ffddd2;
-            color: #006d77;
+            background: #ff0000;
+            color: #ffffff;
         }
         #more
         {
@@ -95,16 +96,18 @@
             font-size: 1.8rem;
         }
         form{
-            background-color: #ECE4B7;
-            width: 50%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            width: 60%;
+            max-width: 600px;
             margin: auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             font-size: larger;
             font-weight: bold;
             display: flex;
             flex-direction: column;
+            border: 1px solid #e9ecef;
         }
         input 
         {
@@ -117,17 +120,20 @@
             background-color: #edf6f9;
         }
         #save-btn {
-            background-color: #83C5BE;
+            background: linear-gradient(135deg, #83C5BE 0%, #006d77 100%);
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: medium;
+            font-size: large;
             font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            align-self: center;
         }
         #save-btn:hover {
-            background-color: #006d77;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         @media (min-width: 751px) {
             #auth-buttons {
@@ -184,19 +190,28 @@
             
         </div>
     </nav>
-    <h1>Edit Profile</h1>
+    <h1 style="color: #001f3f; margin-bottom: 30px; font-size: 2.5rem;">Edit Profile</h1>
     <form id="edit-profile-form">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" placeholder="Enter new username" required><br><br>
-        
-        <label for="bio">Bio:</label><br>
-        <input type ="text" id="bio" name="bio" rows="4" cols="50" placeholder="Tell us something about yourself" required></textarea><br><br>
-        
-        <label for="fileInput">Profile Picture:-</label><br>
-        <input type="file" id="fileInput" required><br><br>
-        
-        <button type="submit" id="save-btn">Save Changes</button>
+        <div style="margin-bottom: 20px;">
+            <label for="username" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-user"></i> Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter new username" required>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label for="bio" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-info-circle"></i> Bio:</label>
+            <textarea id="bio" name="bio" rows="4" cols="50" placeholder="Tell us something about yourself" required style="width: 100%; border-radius: 10px; border: 2px solid #ced4da; background-color: #ffffff; padding: 15px; font-size: large; resize: vertical; transition: border-color 0.3s ease, box-shadow 0.3s ease;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <label for="fileInput" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-camera"></i> Profile Picture:</label>
+            <input type="file" id="fileInput" accept="image/*" required>
+        </div>
+
+        <button type="submit" id="save-btn"><i class="fas fa-save"></i> Save Changes</button>
     </form>
+    <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type = "module">
@@ -258,6 +273,8 @@
         let form = document.getElementById("edit-profile-form");
 
         form.addEventListener("submit", async function(event) {
+            let submit = document.getElementById("save-btn");
+            submit.disabled = true;
             event.preventDefault();
                 let usernameInput = document.getElementById("username").value;
                 let bioInput = document.getElementById("bio").value;
@@ -309,5 +326,38 @@
         });
 
     </script>
+    <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </body>
 </html>
