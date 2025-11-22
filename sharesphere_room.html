@@ -224,6 +224,44 @@
             border-radius: 20px;
             padding: 0.5rem;
         }
+        #helpbox
+        {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        #helpbut
+        {
+            position: fixed;
+            top: 100px;
+            right: 5px;
+            background-color: #00b4d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+
+        }
+        #close
+        {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #555555;
+            cursor: pointer;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -308,6 +346,47 @@
     <div id = "largeimagebox" style="display:none;">
         <img id = "largeimage" src = "">
     </div>
+    <button id = "helpbut">Chat laguage help!</button>
+    <div id="helpbox">
+    <h2>Chat short forms</h2>
+
+    <div class="item"><b>LOL:</b> Laugh Out Loud</div>
+    <div class="item"><b>LMAO:</b> Laughing My Ass Off</div>
+    <div class="item"><b>ROFL:</b> Rolling On the Floor Laughing</div>
+    <div class="item"><b>BRB:</b> Be Right Back</div>
+    <div class="item"><b>BTW:</b> By The Way</div>
+    <div class="item"><b>OMG:</b> Oh My God</div>
+    <div class="item"><b>IDK:</b> I Don’t Know</div>
+    <div class="item"><b>IKR:</b> I Know, Right?</div>
+    <div class="item"><b>IMO:</b> In My Opinion</div>
+    <div class="item"><b>TBH:</b> To Be Honest</div>
+    <div class="item"><b>TTYL:</b> Talk To You Later</div>
+    <div class="item"><b>DM:</b> Direct Message</div>
+    <div class="item"><b>RN:</b> Right Now</div>
+    <div class="item"><b>TMI:</b> Too Much Information</div>
+    <div class="item"><b>SMH:</b> Shaking My Head</div>
+    <div class="item"><b>FR:</b> For Real</div>
+    <div class="item"><b>FOMO:</b> Fear Of Missing Out</div>
+    <div class="item"><b>POV:</b> Point Of View</div>
+    <div class="item"><b>FTW:</b> For The Win</div>
+    <div class="item"><b>NGL:</b> Not Gonna Lie</div>
+    <div class="item"><b>ICYMI:</b> In Case You Missed It</div>
+    <div class="item"><b>GOAT:</b> Greatest Of All Time</div>
+    <div class="item"><b>BFF:</b> Best Friends Forever</div>
+    <div class="item"><b>SUS:</b> Suspicious / Suspect</div>
+    <div class="item"><b>W / L:</b> Winning / Losing</div>
+    <div class="item"><b>YEET:</b> Throw / Excitement</div>
+    <div class="item"><b>CAP / NO CAP:</b> Lie / No Lie</div>
+    <div class="item"><b>AF:</b> Slang (very)</div>
+    <div class="item"><b>FYP:</b> For You Page</div>
+    <div class="item"><b>WYD:</b> What You Doing?</div>
+    <div class="item"><b>XOXO:</b> Hugs and Kisses</div>
+    <div class="item"><b>GRWM:</b> Get Ready With Me</div>
+    <div class="item"><b>OOTD:</b> Outfit Of The Day</div>
+
+    <div id = "close">Click anywhere in the box to close</div>
+
+</div>
     <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
             © 2025 Share Sphere - Copyrights reserved 
         </footer>
@@ -358,6 +437,17 @@
             dnav.style.gap = "0"
             more.style.display = "none";
         }
+
+        let helpbut = document.getElementById("helpbut");
+        let helpbox = document.getElementById("helpbox");
+        helpbut.addEventListener("click", () =>
+        {
+            helpbox.style.display = "block";
+        });
+        helpbox.addEventListener("click", () =>
+        {
+            helpbox.style.display = "none";
+        });
 
         let logoutbtn = document.getElementById("logout");
         logoutbtn.addEventListener("click", fnclogout);
