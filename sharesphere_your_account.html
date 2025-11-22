@@ -10,10 +10,13 @@
             margin: 0;
             padding: 0;
             font-family:Tahoma;
-            background: linear-gradient(to bottom, #edf6f9, #ffffff);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
         }
         h1{
             text-align: center;
+            color: #ffffff;
+            animation: glow 1.5s infinite alternate;
         }
 
         #navbar {
@@ -84,8 +87,8 @@
         }
 
         #logout:hover {
-            background: #ffddd2;
-            color: #006d77;
+            background: #ff0000;
+            color: #ffffff;
         }
         #more
         {
@@ -116,19 +119,31 @@
             display: flex;
             gap: 1.8rem;
             flex-direction: column;
-            border: 2px dashed #006d77;
             padding: 1rem;
             flex-wrap: wrap;
             font-size: 1.2rem;
             flex-grow: 1;
             font-weight: bold;
             background-color: whitesmoke;
+            border-radius: 8px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
-        #pfpimg 
+        #otherinfo:hover {
+            background-color: #f0f0f0;
+            border: 2px solid #ff4500;
+            box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        #pfpimg
         {
             height: 12rem;
             width: 12rem;
             border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        #pfpimg:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
         #posts
         {
@@ -156,6 +171,13 @@
             font-weight: bolder;
             margin: 4px;
             width: 100%;
+            transition: all 0.3s ease;
+        }
+        #editdetails:hover {
+            background: #ff4500;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
         }
         #addfiles, #vfr {
             position: inline-block;
@@ -170,6 +192,13 @@
             margin: 4px;
             width: 100%;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+        #addfiles:hover, #vfr:hover {
+            background: #ff4500;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
         }
         #buttons
         {
@@ -184,6 +213,25 @@
             font-style: italic;
             font-weight: normal;
             color: #333;
+        }
+        #loading
+        {
+            position: fixed;
+            margin: 0%;
+            padding: 0%;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            text-align: center;
+        }
+        .post-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         @media (min-width: 751px) {
             #auth-buttons {
@@ -218,6 +266,10 @@
                 gap: 0.2rem;
             }
         }
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 154, 158, 0.8), 0 0 30px rgba(254, 207, 239, 0.6); }
+        }
     </style>
 </head>
 <body>
@@ -239,6 +291,9 @@
                 <button id="logout">Log Out</button>
             </div>
             
+        </div>
+        <div id = "loading">
+            <img src = "loading.gif" >
         </div>
     </nav>
     <main>
@@ -266,6 +321,9 @@
         <h1>Posts:-</h1>
         <div id = "posts">
         </div>
+        <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
     </main>
     <script type = "module">
         let more = document.getElementById("more");
@@ -353,6 +411,8 @@
                 usernamediv.innerText = "Hi there, " + datadoc.data().username;
                 let emaildiv = document.getElementById("emailid");
                 emaildiv.innerText = "Your email id:- " + email;
+                let loading = document.getElementById("loading");
+                loading.style.display = "none";
                 let postsdiv = document.getElementById("posts");
                 const postsnapshot = await getDocs (query(collection(db, "posts"), orderBy("timestamp", "desc")));
                 postsnapshot.forEach((doc) => {
@@ -360,6 +420,7 @@
                     if (postdata.email === email)
                     {
                         let postdiv = document.createElement("div");
+                        postdiv.classList.add("post-item");
                         postdiv.style.display = "flex";
                         postdiv.style.flexDirection = "column";
                         postdiv.style.alignItems = "center";
@@ -410,5 +471,38 @@
         
 
     </script>
+    <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </body>
 </html>
