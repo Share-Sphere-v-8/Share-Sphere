@@ -122,8 +122,8 @@
     }
 
     #asu:hover {
-        background: #ffddd2;
-        color: #006d77;
+        background: #ff0000;
+        color: #ffffff;
     }
 
     #logout {
@@ -135,8 +135,8 @@
     }
 
     #logout:hover {
-        background: #ffddd2;
-        color: #006d77;
+        background: #ff0000;
+        color: #ffffff;
     }
     #more
     {
@@ -195,8 +195,8 @@
             </div>
             <button id = "more">&#9776;</button>
             <div id="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="sharesphere_public_page.html">Public page</a>
+                <a href="index.html">Return</a>
+                <a href="sharesphere_public_page.html">Home</a>
                 <a href="sharesphere_feedback.html">Feedback</a>
             </div>
 
@@ -224,6 +224,9 @@
             </div>
         </div>
     </div>
+    <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
     
    <script type = "module">
         let more = document.getElementById("more");
@@ -308,5 +311,38 @@
         }); 
 
     </script>
+    <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </body>
 </html>
