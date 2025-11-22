@@ -32,6 +32,7 @@
             top: 0;
             left: 0;
             margin-bottom: 2px;
+            z-index: 1000;
         }
 
         #nav-container {
@@ -147,12 +148,59 @@
         }
         #posts
         {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
             justify-content: center;
-            align-items: center;
-            margin: 1rem;
+            align-items: start;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
+        }
+
+        .post-card {
+            background: linear-gradient(145deg, #ffffff, #f0f8ff);
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255,255,255,0.5);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255,255,255,0.8);
+            border-color: #667eea;
+        }
+
+        .post-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #f0f8ff, #e6f3ff);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .post-card:hover img {
+            transform: scale(1.08) rotate(1deg);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .post-card .caption {
+            color: #555;
+            margin-bottom: 20px;
+            text-align: center;
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.4;
         }
         #username
         {
@@ -424,31 +472,20 @@
                 const postsnapshot = await getDocs (query(collection(db, "posts"), orderBy("timestamp", "desc")));
                 postsnapshot.forEach((doc) => {
                     let postdata = doc.data();
-                    if (postdata.email === email)
-                    {
-                        let postdiv = document.createElement("div");
-                        postdiv.style.display = "flex";
-                        postdiv.style.flexDirection = "column";
-                        postdiv.style.alignItems = "center";
-                        postdiv.style.justifyContent = "center";
-                        postdiv.style.border = "2px solid #006d77";
-                        postdiv.flexGrow = "1";
-                        postdiv.style.borderRadius = "8px";
-                        postdiv.style.backgroundColor = "#f9f9f9";
-                        let imgdiv = document.createElement("img");
-                        imgdiv.src = postdata.imageUrl;
-                        imgdiv.style.height = "23rem";
-                        imgdiv.style.width = "23em";
-                        imgdiv.style.margin = "4px";
-                        imgdiv.style.border = "2px solid #006d77";
-                        imgdiv.style.borderRadius = "8px";
-                        postdiv.appendChild(imgdiv);
-                        let caption = document.createElement("div");
-                        caption.innerText = postdata.caption;
-                        caption.style.textAlign = "center";
-                        caption.style.fontWeight = "bolder";
-                        caption.style.marginBottom = "1rem";
-                        postdiv.appendChild(caption);
+                if (postdata.email === email)
+                {
+                    let postdiv = document.createElement("div");
+                    postdiv.classList.add("post-card");
+
+                    let imgdiv = document.createElement("img");
+                    imgdiv.src = postdata.imageUrl;
+                    postdiv.appendChild(imgdiv);
+
+                    let caption = document.createElement("div");
+                    caption.classList.add("caption");
+                    caption.innerText = postdata.caption;
+                    postdiv.appendChild(caption);
+
 
                         postsdiv.appendChild(postdiv);
                     }
