@@ -138,7 +138,7 @@
         #hp {
             font-size: 3rem;
             font-weight: bold;
-            color: #006d77;
+            color: white;
             margin: 50px 0 40px 0;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -548,7 +548,8 @@
                 likes.className = "likes";
                 likes.textContent = `Likes: ${postData.likes || 0}`;
 
-                postDiv.addEventListener("click", () => {
+                postDiv.addEventListener("click", function (event) {
+                    event.stopPropagation();
                     const largePost = document.getElementById("largepost");
                     largePost.innerHTML = "";
                     largePost.style.display = "flex";
@@ -584,9 +585,15 @@
                     largePost.appendChild(largeImg);
                     largePost.appendChild(largeCaption);
                     largePost.style.display = "block";
-                    largePost.addEventListener("click", () => {
-                        largePost.style.display = "none";
-                    });
+                    let body = document.querySelector("body");
+                    document.addEventListener("click", function(event)
+                        {
+                            if (!largePost.contains(event.target)) 
+                            {
+                                largePost.style.display = "none";
+                            }
+
+                        });
                     let closebtn = document.createElement("div");
                     closebtn.textContent = "Click anywhere to close";
                     closebtn.style.marginTop = "10px";
