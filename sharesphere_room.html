@@ -585,10 +585,16 @@
                 div.style.margin = "5px";
                 div.style.padding = "8px 12px";
                 sentmessagediv.style.borderRadius = "10%";
-                div.style.textAlign = "right"
+                div.style.textAlign = "right";
+                const dateObject = new Date(msg.timestamp);
+                let date = document.createElement("div");
+                date.innerText = dateObject.toLocaleString();
+                date.style.fontSize = "0.7rem";
+                date.style.color = "gray";
                 let mychats = document.getElementById("chatbox");
                 mychats.scrollTop = mychats.scrollHeight;
-                div.appendChild(sentmessagediv)
+                div.appendChild(sentmessagediv);
+                sentmessagediv.appendChild(date);
                 mychats.appendChild(div);
                 if (msg.songurl)
                 {
@@ -633,10 +639,16 @@
                 div.style.margin = "5px";
                 div.style.padding = "8px 12px";
                 sentmessagediv.style.borderRadius = "10%";
-                div.style.textAlign = "left"
+                div.style.textAlign = "left";
+                const dateObject = new Date(msg.timestamp);
+                let date = document.createElement("div");
+                date.innerText = dateObject.toLocaleString();
+                date.style.fontSize = "0.7rem";
+                date.style.color = "grey";
                 let mychats = document.getElementById("chatbox");
                 mychats.scrollTop = mychats.scrollHeight;
                 div.appendChild(sentmessagediv);
+                sentmessagediv.appendChild(date);
                 mychats.appendChild(div);
                 if (msg.songurl)
                 {
