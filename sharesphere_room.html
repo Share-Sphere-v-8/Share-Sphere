@@ -616,8 +616,8 @@
                 let div = document.createElement("div");
 
                 let rmeamil = msg.sender;
-                let userref = doc(fs, "users", rmeamil);
-                let sendername = rmeamil;
+                let senderna = await getDoc(doc(fs, "users", rmeamil));
+                let sendername = senderna.data().username;
                 let senderpara = document.createElement("div");
                 senderpara.innerText = sendername;
                 senderpara.style.fontSize = "0.7rem";
