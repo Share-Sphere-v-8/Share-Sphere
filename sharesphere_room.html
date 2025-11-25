@@ -262,6 +262,16 @@
             color: #555555;
             cursor: pointer;
         }
+        #loading
+        {
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            background-color: #ffffff;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -302,6 +312,9 @@
     </style>
 </head>
 <body>
+    <div id = "loading">
+        <img src = "loading.gif"></img>
+    </div>
         <div id = "chatcon">
             <nav id="navbar">
             <div id="nav-container">
@@ -463,6 +476,7 @@
                 alert("Error occured while signing out, please try again later.")
             });
         }
+        let loading = document.getElementById("loading");
         onAuthStateChanged(auth, async (user)=> {
             if (user)
         {
@@ -481,6 +495,7 @@
             roomnamediv.innerText = roomid;
             let roomiddiv = document.getElementById("roomid");
             roomiddiv.innerText = roomdescription;
+            loading.style.display = "none";
             let inputform = document.getElementById("input");
             let text = document.getElementById("text").value;
             let address = roomidSafe;
