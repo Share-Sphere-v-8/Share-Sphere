@@ -154,6 +154,20 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+        #loading
+        {
+            position: fixed;
+            margin: 0%;
+            padding: 0%;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            text-align: center;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -190,6 +204,9 @@
     </style>
 </head>
 <body>
+    <div id = "loading">
+        <img src = "loading.gif">
+    </div>
     <nav id="navbar">
         <div id="nav-container">
             <div id="name">
@@ -264,6 +281,10 @@
             dnav.style.gap = "0"
             more.style.display = "none";
         }
+        let loading = document.getElementById("loading");
+        window.addEventListener("load", () => {
+            loading.style.display = "none";
+        });
 
         let logoutbtn = document.getElementById("logout");
         logoutbtn.addEventListener("click", fnclogout);
@@ -284,6 +305,7 @@
         from.addEventListener("submit", uploadpost);
         async function uploadpost(e)
         {
+            loading.style.display = "block";
             let post = document.getElementById("postbtn");
             post.disabled = true;
             e.preventDefault();
@@ -296,6 +318,7 @@
                 if(!file)
                 {
                     alert("Please select a file");
+                    loading.style.display = "none";
                     return;
                 }
                 let date = Date.now();
@@ -303,6 +326,7 @@
                 if(error)
                 {
                     alert("Error uploading file: " + error.message);
+                    loading.style.display = "none";
                     return;
                 }
                 let { data: { publicUrl } } = supabasec.storage.from('publicpost').getPublicUrl(email + date + file.name);
@@ -318,6 +342,7 @@
                         timestamp: date.toString()
                     });
                     alert("Post uploaded successfully");
+                    loading.style.display = "none";
                     window.location.href = "sharesphere_public_page.html";
                     caption.value = "";
                     fileInput.value = "";
