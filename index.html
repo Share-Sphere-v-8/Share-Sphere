@@ -1,628 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
-    <title>Share Sphere - Chat</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #edf6f9;
-        }
-        html, body {
-            height: 100%;
-            overflow: hidden; 
-            background-color: #f1f1f1;
-        }
-        h1 {
-            text-align: center;
-        }
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "icon" href = "logo.jpg" type = "image/x-icon">
+  <title>Share Sphere</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #b3c3f3;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
         #navbar {
         width: 100%;
-            background-color: #001f3f;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            left: 0;
-            margin-bottom: 2px;
-        }
+        background-color: #001f3f;
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
 
-        #nav-container {
-            margin: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    #nav-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        #name {
-            display: flex;
-            align-items: center;
-        }
+    #name {
+        display: flex;
+        align-items: center;
+    }
 
-        #name span {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #edf6f9;
-        }
+    #name span {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #edf6f9;
+    }
 
-        #desktop-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3.5rem;
-            font-size: 0.8rem;
-        }
+    #desktop-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 3.5rem;
+        font-size: 0.8rem;
+    }
 
-        #desktop-nav a {
-            color: #edf6f9;
-            font-weight: 500;
-            transition: color 0.5s ease;
-            font-size: medium;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
+    #desktop-nav a {
+        color: #edf6f9;
+        font-weight: 500;
+        transition: color 0.5s ease;
+        font-size: medium;
+        text-decoration: none;
+        font-size: 1.1rem;
+    }
 
-        #desktop-nav a:hover {
-            color: #ffddd2;
-        }
+    #desktop-nav a:hover {
+        color: #ffddd2;
+    }
 
-        #auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20%;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
+    #auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20%;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
 
-        #logout {
-            background: #00b4d8;
-            border: 2px solid #00b4d8;
-            color: #edf6f9;
-            font-size: 1rem;
-            border-radius: 5px;
-        }
+    #asi {
+        background: transparent;
+        border: 2px solid #83c5be;
+        color: #edf6f9;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    #asi:hover {
+        background: #83c5be;
+        color: #006d77;
+    }
+
+    #asu {
+        background: #e29578;
+        border: 2px solid #e29578;
+        color: #edf6f9;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    #asu:hover {
+        background: #ffddd2;
+        color: #006d77;
+    }
+
+    #logout {
+        background: #00b4d8;
+        border: 2px solid #00b4d8;
+        color: #edf6f9;
+        font-size: 1rem;
+        border-radius: 5px;
+    }
 
         #logout:hover {
             background: #ff0000;
             color: #ffffff;
         }
-        #more
-        {
-            display: none;
-            background-color: transparent;
-            color: white;
-            font-size: 1.8rem;
-        }
-        #chatcon {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            width: 100%;
-            background: #f1f1f1;
-            }
+    #more
+    {
+        display: none;
+        background-color: transparent;
+        font-size: 1.8rem;
+        color: white;
+    }
+    #container {
+      text-align: center;
+      background: #98c1d9;
+      width: 90%;
+      max-width: 800px;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      margin: auto;
+      margin-top: 50px;
+      box-sizing: border-box;
 
-            #chatheading {
-            flex-shrink: 0;
-            background: #25D366;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            }
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #555;
+      font-size: 20px;
+      line-height: 1.6;
+    }
 
-            #chatbox {
-            flex: 1;
-            overflow-y: auto;
-            min-height: 0;
-            padding: 10px;
-            background: #f8f9fa;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: flex-start;
-            flex-direction: column;
-            padding-bottom: 70px;
-            }
+    
+    #profile {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 15px;
+    }
+    #profile img {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    #profile-name {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
 
-            #fndchats, #mychats {
-            margin: 5px;
-            padding: 8px 12px;
-            border-radius: 15px;
-            max-width: 70%;
-            word-wrap: break-word;
-            }
+    
+    .launch-btn {
+      display: inline-block;
+      background: #d6ccc2;
+      padding: 15px 30px;
+      margin-top: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      font-size: 22px;
+      font-weight: bold;
+      color: #3d3d3d;
+      text-decoration: none;
+      transition: background 0.3s ease, transform 0.2s ease;
+      border: none;
+    }
+    .launch-btn:hover {
+      background: #cdb4db;
+      transform: scale(1.05);
+    }
 
-            #fndchats {
-            background: transparent;
-            align-self: flex-start;
-            }
-
-            #mychats {
-            background: transparent;
-            align-self: flex-end;
-            }
-
-            #inputbox {
-            flex-shrink: 0;
-            flex-wrap: wrap;
-            background: #fff;
-            border-top: 1px solid #ccc;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 5px;
-            max-width: 100%;
-            }
-            #otherfeatures
-            {
-                display: flex;
-                gap: 10px;
-                justify-content: center;
-                align-items: center;
-            }
-
-            #input {
-            display: flex;
-            flex: 1;
-            gap: 10px;
-            }
-
-            #text {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            outline: none;
-            }
-
-            #submit, #addsong, #addimage {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            background: #25D366;
-            color: white;
-            cursor: pointer;
-            }
-        #songbox, #largeimagebox
-        {
-            position: fixed;           
-            top: 50%;                  
-            left: 50%;                 
-            transform: translate(-50%, -50%); 
-            background: white;         
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            z-index: 9999;  
-            text-align: center;
-            display: none;
-            flex-direction: column;
-        }
-        #largeimage {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        #sendsong
-        {
-            margin: 2rem;
-            padding: 1rem;
-            background-color: #25D366;
-            color: white;
-            border-radius: 20px;
-            padding: 0.5rem;
-        }
-        @media (min-width: 851px) {
-            #auth-buttons {
-                flex-direction: row;
-                gap: 1rem;
-            }
-            #desktop-nav
-            {
-                display: flex;
-                flex-direction: row;
-                gap: 3.5rem;
-            }
-            #more{
-                display: none ;
-                border: 2px solid #edf6f9;
-                padding: 4px;
-                margin: 2px;
-            }
-        }
-        @media (max-width: 850px) {
-            #desktop-nav {
-                display: none;
-            }
-            #more {
-                display: block;
-            }
-            #nav-container{
-                flex-direction: column;
-            }
-            #auth-buttons{
-                flex-direction: column;
-                gap: 0.2rem;
-            }
-        }
-    </style>
-</head>
-<body>
-        <div id = "chatcon">
-            <nav id="navbar">
-            <div id="nav-container">
-            <div id="name">
-                <span>Share Sphere</span>
-            </div>
-            <button id = "more">&#9776;</button>
-            <div id="desktop-nav">
-                <a href="sharesphere_public_page.html">Home</a>
-                <a href="sharesphere_find_people.html">Find People</a>
-                <a href="sharesphere_your_account.html">Your account</a>
-                <a href ="sharesphere_friends.html">My friends</a>
-                <a href ="sharesphere_find_rooms.html">Join room</a>
-                <a href="sharesphere_feedback.html">Feedback</a>
-            </div>
-
-            <div id="auth-buttons">
-                <button id="logout">Log Out</button>
-            </div>
-            
-        </div>
-    </nav>
-            <div id = "chatheading">
-                <div id ="fndname"></div>
-                <div id = "fndemail"></div>
-            </div>
-            <div id = "chatbox">
-            </div>
-            <div id = "inputbox">
-                <form id = "input">
-                    <input type = "text" id = "text" placeholder = "Enter your message" autocomplete="off" required>
-                    <input type = "submit" id = "submit" placeholder = "Send" value = "Send">
-                </form>
-                <div id = "otherfeatures">
-                    <button id = "addsong">Add Song</button>
-                    <input type = "file" id = "imageinput" accept="image/*" style="display:none;">
-                    <button id = "addimage">Add Image</button>
-                </div>
-            </div>
-        </div>
-    <div id = "songbox">
-       <input type="text" id="search" placeholder="Search for a song">
-        <button onclick="searchSong()">Search</button>
-    <div id="player"></div>
-        <buton id = "sendsong">Send!</buton>
-    </div>
-    <div id = "largeimagebox" style="display:none;">
-        <img id = "largeimage" src = "">
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type = "module">
-        const { createClient } = supabase;
-        const supabaseUrl = "https://vrwaodcjdaybfsphffgs.supabase.co";
-        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyd2FvZGNqZGF5YmZzcGhmZmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5Njk5MTcsImV4cCI6MjA3NDU0NTkxN30.yAKuQhYUeGEFeZpLZpTcgjlXUW4LYPIi2FbBr5SDXNM";
-        const supabasec = createClient(supabaseUrl, supabaseKey);
-
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import {
-            getAuth,
-            signInWithEmailAndPassword,
-            createUserWithEmailAndPassword,
-            onAuthStateChanged,
-            signOut,
-            sendEmailVerification
-            } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-            import { getDatabase, ref, set, get, child, onValue, onChildAdded, push } 
-      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
-            authDomain: "share-sphere-v-8.firebaseapp.com",
-            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
-            projectId: "share-sphere-v-8",
-            storageBucket: "share-sphere-v-8.firebasestorage.app",
-            messagingSenderId: "931094139319",
-            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
-            measurementId: "G-DKHQ2H23VM"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getDatabase(app);
-        const fs = getFirestore(app);
-        let auth = getAuth();
-        let more = document.getElementById("more");
-        more.addEventListener("click", moreclicked);
-        function moreclicked()
-        {
-            let dnav = document.getElementById("desktop-nav");
-            dnav.style.display = "flex";
-            dnav.style.flexDirection = "column";
-            dnav.style.gap = "0"
-            more.style.display = "none";
-        }
-
-        let logoutbtn = document.getElementById("logout");
-        logoutbtn.addEventListener("click", fnclogout);
-        function fnclogout()
-        {
-            signOut(auth)
-            .then(() => {
-                window.location.href = "sharesphere_logout.html"
-            }).catch((error) => {
-                alert("Error occured while signing out, please try again later.")
-            });
-        }
-        onAuthStateChanged(auth, async (user)=> {
-            if (user)
-        {
-            if(user.emailVerified === false)
-            {
-            alert("Please verify your email id first, to access your account");
-            window.location.href = "index.html";
-            }
-            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
-            let useremailSafe = user.email.replace(/\./g, ",");
-            let fndemailSafe = fndemail.replace(/\./g, ",");
-            console.log(fndemail);
-            let friend = await getDoc(doc(fs, "users", fndemail));
-            let fndname = friend.data().username;
-            let fndnamediv = document.getElementById("fndname");
-            fndnamediv.innerText = fndname;
-            let fndemaildiv = document.getElementById("fndemail");
-            fndemaildiv.innerText = fndemail;
-            let inputform = document.getElementById("input");
-            let text = document.getElementById("text").value;
-            let address = null;
-            inputform.addEventListener("submit", async(e) =>
-            {
-                e.preventDefault();
-                let text = document.getElementById("text").value;
-                console.log(text);
-
-                let address;
-                if (user.email > fndemail) {
-                    address = `${useremailSafe}_${fndemailSafe}`;
-                } else {
-                    address = `${fndemailSafe}_${useremailSafe}`;
-                }
-                const chatRef = ref(db, `chats/${address}/messages`);
-
-                const newMsg = push(chatRef);
-                set(newMsg, {
-                sender: user.email,
-                text: text,
-                timestamp: Date.now()
-                });
-                let textdiv = document.getElementById("text");
-                textdiv.value = "";
-            });
-                if (user.email > fndemail) {
-                    address = `${useremailSafe}_${fndemailSafe}`;
-                } else {
-                    address = `${fndemailSafe}_${useremailSafe}`;
-                }
-            const chatRef = ref(db, `chats/${address}/messages`);
-
-            let send = document.getElementById("sendsong");
-            send.addEventListener("click", async() =>
-            {
-                let address;
-                if (user.email > fndemail) {
-                    address = `${useremailSafe}_${fndemailSafe}`;
-                } else {
-                    address = `${fndemailSafe}_${useremailSafe}`;
-                }
-                const chatRef = ref(db, `chats/${address}/messages`);
-                let query = document.getElementById("search").value;
-                if (!query) return alert("Please enter a song name");
-
-                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
-                let response = await fetch(url);
-                let data = await response.json();
-
-                if (data.items.length > 0) {
-                let videoId = data.items[0].id.videoId;
-                console.log(videoId);
-                const newMsg = push(chatRef);
-                set(newMsg, {
-                sender: user.email,
-                songurl: videoId,
-                timestamp: Date.now()
-                });
-                let songbox = document.getElementById("songbox");
-                videoiframe.innerHTML = "";
-                songbox.style.display = "none";
-                }
-                else{
-                    alert("No video found");
-                    return;
-                }
-            });
-
-            let addimagebtn = document.getElementById("addimage");
-            let imageinput = document.getElementById("imageinput");
-            addimagebtn.addEventListener("click", ()=>
-            {
-                imageinput.click();
-            });
-            imageinput.addEventListener("change", async() =>
-            {
-                let file = imageinput.files[0];
-                if (!file) return alert("No file selected");
-                let filename = `${Date.now()}_${file.name}`;
-                let { data, error } = await supabasec.storage
-                .from('chatimages')
-                .upload(filename, file);
-                if (error)
-                {
-                    alert("Error occured while uploading image, please try again later.");
-                    console.log(error);
-                    return;
-                }
-                let { data: { publicUrl } } = supabasec.storage
-                .from('chatimages')
-                .getPublicUrl(filename);
-                let address;
-                if (user.email > fndemail) {
-                    address = `${useremailSafe}_${fndemailSafe}`;
-                } else {
-                    address = `${fndemailSafe}_${useremailSafe}`;
-                }
-                const chatRef = ref(db, `chats/${address}/messages`);
-                const newMsg = push(chatRef);
-                set(newMsg, {
-                sender: user.email,
-                imageurl: publicUrl,
-                timestamp: Date.now()
-                });
-
-            });
-
-            onChildAdded(chatRef, (snapshot) => {
-            const msg = snapshot.val();
-            if(msg.sender == user.email)
-            {
-                let div = document.createElement("div");
-                let sentmessagediv = document.createElement("div");
-                sentmessagediv.innerText = msg.text;
-                sentmessagediv.style.padding = "7px";
-                sentmessagediv.style.display = "inline-block";
-                sentmessagediv.style.backgroundColor = "#dcf8c6"
-                div.style.margin = "5px";
-                div.style.padding = "8px 12px";
-                sentmessagediv.style.borderRadius = "10%";
-                div.style.textAlign = "right"
-                let mychats = document.getElementById("chatbox");
-                mychats.scrollTop = mychats.scrollHeight;
-                div.appendChild(sentmessagediv)
-                mychats.appendChild(div);
-                if (msg.songurl)
-                {
-                sentmessagediv.innerHTML = `<iframe width="320" height="180" 
-              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
-              frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
-                }
-                if (msg.imageurl)
-                {
-                    sentmessagediv.innerText = "";
-                    let img = document.createElement("img");
-                    img.src = msg.imageurl;
-                    img.style.maxWidth = "200px";
-                    img.style.display = "block";
-                    img.addEventListener("click", ()=> {
-                        let largeimagebox = document.getElementById("largeimagebox");
-                        largeimagebox.style.display = "flex";
-                        let lgimg = document.getElementById("largeimage");
-                        lgimg.src = msg.imageurl;
-                    });
-                    sentmessagediv.appendChild(img);
-                }
-            }
-            else{
-                let div = document.createElement("div");
-                let sentmessagediv = document.createElement("div");
-                sentmessagediv.innerText = msg.text;
-                sentmessagediv.style.padding = "7px";
-                sentmessagediv.style.display = "inline-block";
-                sentmessagediv.style.backgroundColor = "#e9ecef"
-                div.style.margin = "5px";
-                div.style.padding = "8px 12px";
-                sentmessagediv.style.borderRadius = "10%";
-                div.style.textAlign = "left"
-                let mychats = document.getElementById("chatbox");
-                mychats.scrollTop = mychats.scrollHeight;
-                div.appendChild(sentmessagediv);
-                mychats.appendChild(div);
-                if (msg.songurl)
-                {
-                sentmessagediv.innerHTML = `<iframe width="320" height="180" 
-              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
-              frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
-                }
-                if (msg.imageurl)
-                {
-                    sentmessagediv.innerText = "";
-                    let img = document.createElement("img");
-                    img.src = msg.imageurl;
-                    img.style.maxWidth = "200px";
-                    img.style.display = "block";
-                    img.addEventListener("click", ()=> {
-                        let largeimagebox = document.getElementById("largeimagebox");
-                        largeimagebox.style.display = "flex";
-                        let lgimg = document.getElementById("largeimage");
-                        lgimg.src = msg.imageurl;
-                    });
-                    sentmessagediv.appendChild(img);
-                    
-                }
-            }
-        });
-
-        }
-            else {
-                alert("you are not logged in!");
-                window.location.href="index.html";
-            }
-        });
-        let addsong = document.getElementById("addsong");
-        let songbox = document.getElementById("songbox");
-        songbox.addEventListener("click", (e) => {
-            if (e.target === songbox) {
-                songbox.style.display = "none";
-                document.getElementById("player").innerHTML = "";
-                document.getElementById("search").value = "";
-            }
-        });
-        addsong.addEventListener("click", ()=>{
-            songbox.style.display = "flex";
-        });
-        
-        let largeimagebox = document.getElementById("largeimagebox");
-        largeimagebox.addEventListener("click", () => {
-            largeimagebox.style.display = "none";
-            let lgimg = document.getElementById("largeimage");
-            lgimg.src = "";
-        });
-    </script>
-    <script>
-async function searchSong() {
-      let query = document.getElementById("search").value;
-      if (!query) return alert("Please enter a song name");
-
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
-
-      try {
-        let response = await fetch(url);
-        let data = await response.json();
-
-        if (data.items.length > 0) {
-          let videoId = data.items[0].id.videoId;
-          document.getElementById("player").innerHTML =
-            `<iframe width="160" height="90" 
-              src="https://www.youtube.com/embed/${videoId}?autoplay=1"
-              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
-        } else {
-          alert("No video found");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Error fetching YouTube data");
+    #loading 
+    {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    @media (min-width: 751px) {
+      #auth-buttons {
+          flex-direction: row;
+          gap: 1rem;
+      }
+      #desktop-nav
+      {
+          display: flex;
+          flex-direction: row;
+          gap: 3.5rem;
+      }
+      #more{
+          display: none ;
+          border: 2px solid #edf6f9;
+          padding: 4px;
+          margin: 2px;
       }
     }
-    </script>
+    @media (max-width: 750px) {
+      #desktop-nav {
+          display: none;
+      }
+      #more {
+          display: block;
+      }
+      #nav-container{
+          flex-direction: column;
+      }
+      #auth-buttons{
+          flex-direction: column;
+          gap: 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div id = "loading">
+        <img src = "loading.gif">
+    </div>
+  <nav id="navbar">
+      <div id="nav-container">
+          <div id="name">
+              <span>Share Sphere</span>
+          </div>
+          <button id = "more">&#9776;</button>
+          <div id="desktop-nav">
+              <a href = "sharesphere_about_us.html">About Us</a>
+              <a href="sharesphere_feedback.html">Feedback</a>
+          </div>
+
+          <div id="auth-buttons">
+              <button id="asi">Sign In</button>
+              <button id="asu">Sign Up</button>
+              <button id="logout">Log out</button>
+          </div>
+          
+      </div>
+  </nav>
+  <div id="container">
+    <h1>Welcome to Share Sphere!</h1>
+    
+    <div id="profile">
+      <img src="#" alt="Profile Picture" id = "pfp">
+      <div id="profile-name">User id of the person</div>
+    </div>
+    <p>
+      <b>This is a platform where you can share your thoughts and ideas with the world.
+      You can also find people with similar interests and connect with them. Explore the
+      public posts and feel free to join the conversation with your friends!</b>
+    </p>
+    <a href="sharesphere_public_page.html" class="launch-btn" id="launch-btn">Launch application</a>
+    <button class="launch-btn" id="signin-btn">Sign In</button>
+    <button class="launch-btn" id="signup-btn">Sign Up</button>
+  </div>
+  <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
+            © 2025 Share Sphere - Copyrights reserved 
+        </footer>
+  <script type = "module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+      import { getFirestore, doc, setDoc, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+      import {
+          getAuth,
+          signInWithEmailAndPassword,
+          createUserWithEmailAndPassword,
+          onAuthStateChanged,
+          signOut,
+          sendEmailVerification
+          } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+      const firebaseConfig = {
+          apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+          authDomain: "share-sphere-v-8.firebaseapp.com",
+          databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+          projectId: "share-sphere-v-8",
+          storageBucket: "share-sphere-v-8.firebasestorage.app",
+          messagingSenderId: "931094139319",
+          appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+          measurementId: "G-DKHQ2H23VM"
+      };
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      let auth = getAuth();
+
+      onAuthStateChanged(auth, (user) =>
+        {
+            if (user)
+            {
+                asu.style.display = "none";
+                asi.style.display = "none";
+                logout.style.display = "block";
+                document.getElementById("launch-btn").style.display = "inline-block";
+                document.getElementById("signin-btn").style.display = "none";
+                document.getElementById("signup-btn").style.display = "none";
+                let loading = document.getElementById("loading");
+                loading.style.display = "none";
+            }
+            else{
+                asu.style.display = "block";
+                asi.style.display = "block";
+                logout.style.display = "none";
+                document.getElementById("launch-btn").style.display = "none";
+                document.getElementById("signin-btn").style.display = "inline-block";
+                document.getElementById("signup-btn").style.display = "inline-block";
+                let loading = document.getElementById("loading");
+                loading.style.display = "none";
+            }
+        });
+
+      asi.addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_in.html";
+      });
+      asu.addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_up.html";
+      });
+      document.getElementById("signin-btn").addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_in.html";
+      });
+      document.getElementById("signup-btn").addEventListener("click", () =>
+      {
+          window.location.href = "sharesphere_sign_up.html";
+      });
+      logout.addEventListener("click", fnclogout);
+      function fnclogout()
+      {
+          signOut(auth)
+          .then(() => {
+              window.location.href = "sharesphere_logout.html"
+          })
+          .catch((error) => {
+              alert("Error occured while logging out");
+          });
+      }
+
+    let more = document.getElementById("more");
+    more.addEventListener("click", moreclicked);
+    function moreclicked()
+    {
+        let dnav = document.getElementById("desktop-nav");
+        dnav.style.display = "flex";
+        dnav.style.flexDirection = "column";
+        dnav.style.gap = "0"
+        more.style.display = "none";
+    }
+
+      async function fetchUserData() {
+        let profile = document.getElementById("profile");
+          let pfp = document.getElementById("pfp");
+          let profileName = document.getElementById("profile-name");
+          let auth =  await getAuth();
+          let user = auth.currentUser;
+          if (user) {
+            if (!user.emailVerified) {
+                profileName.textContent = "Please verify your email";
+                pfp.style.display = "none";
+                return;
+            }
+              let email = user.email;
+              profileName.textContent = user.email; 
+              let username_pfp = await getDoc(doc(getFirestore(), "users", email));
+              let pfpUrl = username_pfp.data().pfpUrl;
+              let username = username_pfp.data().username;
+              if (pfpUrl) {
+                  pfp.src = pfpUrl;
+              } else {
+                  pfp.src = "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-image-gray-blank-silhouette-vector-illustration-305503988.jpg";
+              }
+              if (username) {
+                  profileName.textContent = username;
+              } else {
+                  profileName.textContent = email;
+              }
+                profile.style.display = "flex";
+          } else {
+              pfp.style.display = "none";
+              profileName.style.display = "none";
+          }
+      }
+      
+    onAuthStateChanged(auth, (user) => {
+        fetchUserData(user);
+    });
+      
+  </script>
+  <script>
+      testSpeed();
+async function testSpeed() {
+  const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+  const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+  const startTime = performance.now();
+
+  try {
+      const response = await fetch(fileUrl, { cache: "no-store" });
+      await response.blob(); // Wait for file to fully download
+  } catch (e) {
+      alert("Connect to a better internet connection to continue using our application");
+      window.location.href = "index.html";
+  }
+
+  const endTime = performance.now();
+  const durationInSeconds = (endTime - startTime) / 1000;
+
+  const speedBps = fileSize / durationInSeconds;        // bytes per second
+  const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+  if (speedMbps < 0.1)
+  {
+      alert("Connect to a better internet connection to continue using our application");
+      window.location.href = "index.html";
+  }
+  else if (speedMbps < 0.5)
+  {
+      alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+  }
+}
+</script>
 </body>
 </html>
-
 
