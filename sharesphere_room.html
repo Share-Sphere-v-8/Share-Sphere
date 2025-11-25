@@ -625,6 +625,11 @@
                 let sendername =  msg.sender;
                 let senderpara = document.createElement("div");
                 senderpara.innerText = sendername;
+                senderpara.style.textDecoration = "underline";
+                senderpara.style.cursor = "pointer";
+                senderpara.addEventListener("click", () => {
+                    window.location.href = `sharesphere_friend_account.html?fndemail=${encodeURIComponent(rmeamil)}`;
+                });
                 senderpara.style.fontSize = "0.7rem";
                 let sentmessagediv = document.createElement("div");
                 sentmessagediv.appendChild(senderpara);
