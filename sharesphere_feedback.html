@@ -327,13 +327,13 @@
         });
     }
     onAuthStateChanged(auth, async (user) => {
-        if(!user.emailVerified)
+        if(user)
+        {
+            if(!user.emailVerified)
         {
             alert("Please verify your email first to use our application, an link has been sent in your email, please clcik on that link to continue using our application. Please find the email in the spam folder.");
             window.locaiton.href = "sharesphere_logout.html";
-        }
-        if(user)
-        {
+        }ss
             form.addEventListener("submit", (e)=> formsubmit(e));
             function formsubmit(e)
             {
