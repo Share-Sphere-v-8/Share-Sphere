@@ -176,6 +176,10 @@
             let dob = document.getElementById("dob").value
             let biodata = document.getElementById("biodata").value
             if (password === passwordconfirm){
+                if (password.length < 6){
+                    alert ("Password should be at least 6 characters long.");
+                    return;
+                }
                 createUserWithEmailAndPassword(auth, email, password)
                 .then ((userCredential) => {
                     let user = userCredential.user;
