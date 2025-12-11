@@ -99,9 +99,25 @@
                 font-size: small;
                 margin-bottom: 5px;
             }
+            #loading
+        {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+        }
         </style>
     </head>
     <body>
+        <div id = "loading">
+            <img src = "loading.gif">
+        </div>
         <h1>Share Sphere - Sign Up</h1>
         <div id = "box">
             <form id="signup-form">
@@ -110,8 +126,8 @@
                     <input type="text" id="fullname" name="fullname" placeholder="Username" required>
                 </div><br>
                 <div id = "divdob">
-                    <div id ="dobtext">Date of birth:- <i>(optional)</i></div>
-                    <input type="date" id = "dob" name = "dob" placeholder="Date of birth">
+                    <div id ="dobtext" >Date of birth:- <i>(optional)</i></div>
+                    <input type="date" id = "dob" name = "dob" placeholder="Date of birth"min="1850-01-01" max="2011-12-31">
                 </div><br>
                 <div id = "divbiodata">
                     <input type = "text" id = "biodata" name = "biodata" placeholder = "Bio Data" required>
@@ -163,6 +179,9 @@
         let auth = getAuth(app);
         const db = getFirestore(app);
 
+        let loading = document.getElementById("loading");
+        loading.style.display = "none";
+
         let submit = document.getElementById("signup-form")
         submit.addEventListener ("submit", signup);
         function signup(event){
@@ -180,11 +199,17 @@
                     alert ("Password should be at least 6 characters long.");
                     return;
                 }
+                loading.style.display = "flex";
                 createUserWithEmailAndPassword(auth, email, password)
                 .then (async (userCredential) => {
                     let user = userCredential.user;
-                    await sendEmailVerification(user);
-                    setDoc(doc(db, "users", email),
+                    await sendEmailVerification(user)
+                    .catch((error) =>{
+                        alert("An error occured, for further queries please mail to sharespherev.8@gmail.com or please kindly give us a feedback in our website.");
+                    })
+                    .then(()=>
+                    {
+                        setDoc(doc(db, "users", email),
                     {
                         username: fullname,
                         email:email,
@@ -201,6 +226,7 @@
                     .catch((error) => {
                         alert ("Error Occured in sending data! Please retry");
                         console.log(error);
+                    });
                     });
                 })
                 .catch((error) => {
