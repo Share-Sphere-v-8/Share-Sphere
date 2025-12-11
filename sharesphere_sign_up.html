@@ -112,6 +112,19 @@
             background-color: white;
             z-index: 1000;
         }
+        #googleBtn
+        {
+            background-color: #ced4da;
+            font-weight: bold;
+            border-radius: 20px;
+            border: 3px solid black;
+            font-size: larger;
+        }
+        #googleBtn:hover
+        {
+            background-color: #adb5bd;
+            cursor: pointer;
+        }
         </style>
     </head>
     <body>
@@ -145,6 +158,7 @@
                 <input type = "submit" id = "submit" value="Sign Up">
                 <div id ="alreadyacc" style="margin-top: 20px;"><a href = "sharesphere_sign_in.html">Already have an account? Click here to Sign in</a></div>
             </form>
+            <button id = "googleBtn">Sign in with Google</button>
         </div>
         <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
             © 2025 Share Sphere - Copyrights reserved 
@@ -156,6 +170,9 @@
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
         import {
         getAuth,
+        GoogleAuthProvider, 
+        signInWithPopup,
+        fetchSignInMethodsForEmail,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
         onAuthStateChanged,
@@ -178,9 +195,58 @@
         const analytics = getAnalytics(app);
         let auth = getAuth(app);
         const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
         let loading = document.getElementById("loading");
         loading.style.display = "none";
+
+        document.getElementById("googleBtn").addEventListener("click", () => {
+
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+
+        const user = result.user;
+
+        // STORE USER INFO IN VARIABLES
+        const userName = user.displayName;
+        const userEmail = user.email;
+        const userPhoto = user.photoURL;
+        const userUID = user.uid;
+
+        setDoc(doc(db, "users", email),
+        {
+            username: userName,
+            email:userEmail,
+            date_of_birth: "Not avaialable",
+            biodata: "No biodata available at this moment!",
+            friends: 0,
+            pfp: userPhoto,
+            timestap: new Date()
+        });
+        const loginMethod = user.providerData[0].providerId;  
+        console.log("Name:", userName);
+        console.log("Email:", userEmail);
+        console.log("Photo:", userPhoto);
+        console.log("UID:", userUID);
+        console.log("Login Method:", loginMethod);
+
+      })
+      .catch(async (error) => {
+
+        if (error.code === "auth/account-exists-with-different-credential") {
+          const email = error.customData.email;
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+
+          if (methods.includes("password")) {
+            alert("You already created an account using Email/Password. Please log in using email.");
+          }
+        } else {
+          console.error(error);
+        }
+
+      });
+
+  });
 
         let submit = document.getElementById("signup-form")
         submit.addEventListener ("submit", signup);
