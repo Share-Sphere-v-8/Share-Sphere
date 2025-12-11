@@ -127,10 +127,10 @@
     <body>
         <h1>Share Sphere - Sign In</h1>
         <div id = "box">
+            <h2>Welcome Back</h2>
+            <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
+            <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
             <form id="signup-form">
-                <h2>Welcome Back</h2>
-                <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
-                <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
                 <div id = "divemail">
                     <input type="email" id ="email" name = "email" placeholder = "Email" required>
                 </div><br>
@@ -149,7 +149,7 @@
     <script type="module">
         import { getAuth, GoogleAuthProvider, 
         signInWithPopup,
-        fetchSignInMethodsForEmail, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        fetchSignInMethodsForEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
         import {
@@ -185,7 +185,7 @@
         const userPhoto = user.photoURL;
         const userUID = user.uid;
 
-        setDoc(doc(db, "users", userEmail),
+        await setDoc(doc(db, "users", userEmail),
         {
             username: userName,
             email:userEmail,
