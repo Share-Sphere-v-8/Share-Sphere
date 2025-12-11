@@ -94,6 +94,34 @@
             a:hover {
                 text-decoration: underline;
             }
+            #googleBtn {
+            background-color: #ffffff;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 200px;
+            margin-top: 20px;
+        }
+        #googleBtn i {
+            color: #ea4335;
+            font-size: 16px;
+        }
+        #googleBtn:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
         </style>
     </head>
     <body>
@@ -101,6 +129,8 @@
         <div id = "box">
             <form id="signup-form">
                 <h2>Welcome Back</h2>
+                <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
+                <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
                 <div id = "divemail">
                     <input type="email" id ="email" name = "email" placeholder = "Email" required>
                 </div><br>
@@ -117,7 +147,9 @@
         </footer>
     </body>
     <script type="module">
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, 
+        signInWithPopup,
+        fetchSignInMethodsForEmail, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
         import {
@@ -138,6 +170,56 @@
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         let auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        document.getElementById("googleBtn").addEventListener("click", () => {
+
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+
+        const user = result.user;
+
+        // STORE USER INFO IN VARIABLES
+        const userName = user.displayName;
+        const userEmail = user.email;
+        const userPhoto = user.photoURL;
+        const userUID = user.uid;
+
+        setDoc(doc(db, "users", userEmail),
+        {
+            username: userName,
+            email:userEmail,
+            date_of_birth: "Not avaialable",
+            biodata: "No biodata available at this moment!",
+            friends: 0,
+            pfpUrl: userPhoto,
+            timestap: new Date()
+        });
+        const loginMethod = user.providerData[0].providerId;  
+        console.log("Name:", userName);
+        console.log("Email:", userEmail);
+        console.log("Photo:", userPhoto);
+        console.log("UID:", userUID);
+        console.log("Login Method:", loginMethod);
+        window.location.href = "sharesphere_public_page.html";
+
+      })
+      .catch(async (error) => {
+
+        if (error.code === "auth/account-exists-with-different-credential") {
+          const email = error.customData.email;
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+
+          if (methods.includes("password")) {
+            alert("You already created an account using Email/Password. Please log in using email.");
+          }
+        } else {
+          console.error(error);
+        }
+
+      });
+
+  });
 
         let submit = document.getElementById("signup-form");
         submit.addEventListener ("submit", signin);
