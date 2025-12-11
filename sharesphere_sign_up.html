@@ -229,7 +229,7 @@
         const userPhoto = user.photoURL;
         const userUID = user.uid;
 
-        setDoc(doc(db, "users", userEmail),
+        await setDoc(doc(db, "users", userEmail),
         {
             username: userName,
             email:userEmail,
