@@ -195,7 +195,7 @@
         signOut,
         sendEmailVerification
         } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDoc, doc, setDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDoc, doc, setDoc, updateDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
         const firebaseConfig = {
             apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
             authDomain: "share-sphere-v-8.firebaseapp.com",
@@ -229,7 +229,7 @@
         const userPhoto = user.photoURL;
         const userUID = user.uid;
 
-        await setDoc(doc(db, "users", userEmail),
+        await updateDoc(doc(db, "users", userEmail),
         {
             username: userName,
             email:userEmail,
