@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Share Sphere - Sign Up</title>
+        <title>Share Sphere - Sign In</title>
         <link rel="icon" href = "logo.jpg" type = "image/x-icon">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -94,25 +94,7 @@
             a:hover {
                 text-decoration: underline;
             }
-            #dobtext {
-                color: #6c757d;
-                font-size: small;
-                margin-bottom: 5px;
-            }
-            #loading
-        {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 1000;
-        }
-        #googleBtn {
+            #googleBtn {
             background-color: #ffffff;
             color: #3c4043;
             border: 1px solid #dadce0;
@@ -143,37 +125,21 @@
         </style>
     </head>
     <body>
-        <div id = "loading">
-            <img src = "loading.gif">
-        </div>
-        <h1>Share Sphere - Sign Up</h1>
+        <h1>Share Sphere - Sign In</h1>
         <div id = "box">
+            <h2>Welcome Back</h2>
+            <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
+            <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
             <form id="signup-form">
-                <h2>Create an account now</h2>
-                <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
-                <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
-                <div id = "divfullname">
-                    <input type="text" id="fullname" name="fullname" placeholder="Username" required>
-                </div><br>
-                <div id = "divdob">
-                    <div id ="dobtext" >Date of birth:- <i>(optional)</i></div>
-                    <input type="date" id = "dob" name = "dob" placeholder="Date of birth"min="1850-01-01" max="2011-12-31">
-                </div><br>
-                <div id = "divbiodata">
-                    <input type = "text" id = "biodata" name = "biodata" placeholder = "Bio Data" required>
-                </div><br>
                 <div id = "divemail">
                     <input type="email" id ="email" name = "email" placeholder = "Email" required>
                 </div><br>
                 <div id = "divpassword">
                     <input type = "password" id = "password" name = "password" placeholder = "Password" required>
                 </div><br>
-                <div id = "divpasswordconfirm">
-                    <input type = "password" id = "passwordconfirm" name = "password" placeholder = "Confirm Password" required>
-                </div>
                 <br><br>
-                <input type = "submit" id = "submit" value="Sign Up">
-                <div id ="alreadyacc" style="margin-top: 20px;"><a href = "sharesphere_sign_in.html">Already have an account? Click here to Sign in</a></div>
+                <input type="submit" id = "submit" value="Sign In">
+                <div id ="dontacc" style="margin-top: 20px;"><a href = "sharesphere_sign_up.html">Don't have an account? Click here to sign up</a></div>
             </form>
         </div>
         <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
@@ -181,21 +147,16 @@
         </footer>
     </body>
     <script type="module">
-        
+        import { getAuth, GoogleAuthProvider, 
+        signInWithPopup,
+        fetchSignInMethodsForEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
         import {
-        getAuth,
-        GoogleAuthProvider, 
-        signInWithPopup,
-        fetchSignInMethodsForEmail,
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
-        onAuthStateChanged,
-        signOut,
-        sendEmailVerification
         } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDoc, doc, setDoc, updateDoc} from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
         const firebaseConfig = {
             apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
             authDomain: "share-sphere-v-8.firebaseapp.com",
@@ -206,15 +167,11 @@
             appId: "1:931094139319:web:4d202e258a5c4231ea9832",
             measurementId: "G-DKHQ2H23VM"
         };
-      
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         let auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-
-        let loading = document.getElementById("loading");
-        loading.style.display = "none";
 
         document.getElementById("googleBtn").addEventListener("click", () => {
 
@@ -235,6 +192,9 @@
             email:userEmail,
             friends: 0,
             pfpUrl: userPhoto,
+            friendlist: [],
+            friendrequestsreceived: [],
+            friendrequestssent: [],
             timestap: new Date()
         });
         const loginMethod = user.providerData[0].providerId;  
@@ -263,65 +223,69 @@
 
   });
 
-        let submit = document.getElementById("signup-form")
-        submit.addEventListener ("submit", signup);
-        function signup(event){
-            let submut = document.getElementById("submit");
-            submut.disabled = true;
+        let submit = document.getElementById("signup-form");
+        submit.addEventListener ("submit", signin);
+        function signin(event){
             event.preventDefault();
-            let fullname = document.getElementById("fullname").value;
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
-            let passwordconfirm = document.getElementById("passwordconfirm").value;
-            let dob = document.getElementById("dob").value
-            let biodata = document.getElementById("biodata").value
-            if (password === passwordconfirm){
-                if (password.length < 6){
-                    alert ("Password should be at least 6 characters long.");
-                    return;
-                }
-                loading.style.display = "flex";
-                createUserWithEmailAndPassword(auth, email, password)
-                .then (async (userCredential) => {
-                    let user = userCredential.user;
-                    await sendEmailVerification(user)
-                    .catch((error) =>{
-                        alert("An error occured, for further queries please mail to sharespherev.8@gmail.com or please kindly give us a feedback in our website.");
-                    })
-                    .then(()=>
-                    {
-                        setDoc(doc(db, "users", email),
-                    {
-                        username: fullname,
-                        email:email,
-                        date_of_birth: dob,
-                        biodata: biodata,
-                        friends: 0,
-                        pfp: "",
-                        friendlist: [],
-                        friendrequestsreceived: [],
-                        friendrequestssent: [],
-                        timestap: new Date()
-                    })
-                    .then(() => {
-                        alert ("Acoount created, an verification email has been sent, please click on the link and verify your email to continue using our application! (The mail might have reached the spam folder in your email");
-                        window.location.href = "sharesphere_email_verify.html";
-                    })
-                    .catch((error) => {
-                        alert ("Error Occured in sending data! Please retry");
-                        console.log(error);
-                    });
-                    });
+            signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                let user = userCredential.user;
+                let db = getFirestore(app);
+                getDoc(doc(db, "users", email))
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists()) {
+                        let name = docSnapshot.data().username
+                        alert(`Welcome back ${name} `);
+                        window.location.href = "#";
+                    }
                 })
                 .catch((error) => {
-                alert("Error occurred while creating account! Please try again.");
-                console.error("Error creating user: ", error);
+                    alert("Error fetching user data:", error.message);
                 });
-            }
-            else {
-                alert ("The password fields are differnt.");
-            }
+            })
+            .catch((error) => {
+                alert("Error occured while logging in, check weather the entered email id and password are correct or not");
+            });
         }
-        
-    </script>
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "sharesphere_public_page.html"
+            }
+        });
+      </script>
+      <script>
+        testSpeed();
+async function testSpeed() {
+    const fileUrl = "https://speed.cloudflare.com/__down?bytes=1000000";
+    const fileSize = 1 * 1024 * 1024; // 1MB in bytes
+
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(fileUrl, { cache: "no-store" });
+        await response.blob(); // Wait for file to fully download
+    } catch (e) {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+
+    const endTime = performance.now();
+    const durationInSeconds = (endTime - startTime) / 1000;
+
+    const speedBps = fileSize / durationInSeconds;        // bytes per second
+    const speedMbps = (speedBps * 8) / (1024 * 1024);     // convert to Mbps
+
+    if (speedMbps < 0.1)
+    {
+        alert("Connect to a better internet connection to continue using our application");
+        window.location.href = "index.html";
+    }
+    else if (speedMbps < 0.5)
+    {
+        alert("Looks like you have a slow internet connection, some of the fetures might not work properly!");
+    }
+}
+</script>
 </html>
