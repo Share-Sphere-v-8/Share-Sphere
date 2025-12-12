@@ -190,21 +190,22 @@
             
         </div>
     </nav>
-    <h1 style="color: #001f3f; margin-bottom: 30px; font-size: 2.5rem;">Edit Profile</h1>
+    <h1 style="color: #001f3f; margin-bottom: 30px; font-size: 2.5rem;">Update your profile information here!</h1>
+    <h3 style="text-align: center; color: #495057; margin-bottom: 40px;">Note:- Do not fill up the columns where you do not want to change.</h3>
     <form id="edit-profile-form">
         <div style="margin-bottom: 20px;">
             <label for="username" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-user"></i> Username:</label>
-            <input type="text" id="username" name="username" placeholder="Enter new username" required>
+            <input type="text" id="username" name="username" placeholder="Enter new username" >
         </div>
 
         <div style="margin-bottom: 20px;">
             <label for="bio" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-info-circle"></i> Bio:</label>
-            <textarea id="bio" name="bio" rows="4" cols="50" placeholder="Tell us something about yourself" required style="width: 100%; border-radius: 10px; border: 2px solid #ced4da; background-color: #ffffff; padding: 15px; font-size: large; resize: vertical; transition: border-color 0.3s ease, box-shadow 0.3s ease;"></textarea>
+            <textarea id="bio" name="bio" rows="4" cols="50" placeholder="Tell us something about yourself" style="width: 100%; border-radius: 10px; border: 2px solid #ced4da; background-color: #ffffff; padding: 15px; font-size: large; resize: vertical; transition: border-color 0.3s ease, box-shadow 0.3s ease;"></textarea>
         </div>
 
         <div style="margin-bottom: 30px;">
             <label for="fileInput" style="display: block; margin-bottom: 8px; color: #495057; font-weight: 600;"><i class="fas fa-camera"></i> Profile Picture:</label>
-            <input type="file" id="fileInput" accept="image/*" required>
+            <input type="file" id="fileInput" accept="image/*" >
         </div>
 
         <button type="submit" id="save-btn"><i class="fas fa-save"></i> Save Changes</button>
@@ -222,7 +223,7 @@
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import {
             getAuth,
             signInWithEmailAndPassword,
@@ -281,13 +282,35 @@
                 let fileInput = document.getElementById("fileInput").files[0];
                 user = auth.currentUser;
                 let email = user.email;
-                await updateDoc(doc(db, "users", email), {
+                if (usernameInput && bioInput)
+                {
+                    await updateDoc(doc(db, "users", email), {
                     username: usernameInput,
                     biodata: bioInput
                 })
                 .catch((error) => {
                     alert("Error updating profile: ", error.message);
                 });
+                }
+                else if (usernameInput)
+                {
+                    await updateDoc(doc(db, "users", email), {
+                    username: usernameInput
+                })
+                .catch((error) => {
+                    alert("Error updating profile: ", error.message);
+                });
+                }
+                else if (bioInput)
+                {
+                    await updateDoc(doc(db, "users", email), {
+                    biodata: bioInput
+                })
+                .catch((error) => {
+                    alert("Error updating profile: ", error.message);
+                });
+                }
+                
                 const date = Date.now();
             if (fileInput) {
                 const { data, error } = await supabasec.storage
@@ -312,15 +335,14 @@
             window.location.href = "sharesphere_your_account.html"
         });
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = "index.html";
             }
             else if (user)
             {
                 if (!user.emailVerified) {
-                    alert("Please verify your email to edit profile.");
-                    window.location.href = "index.html";
+                    window.location.href = "sharesphere_email_verify.html";
                 }
             }
         });
