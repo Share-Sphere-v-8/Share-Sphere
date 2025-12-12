@@ -318,6 +318,22 @@
             from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
             to { text-shadow: 0 0 20px rgba(255, 154, 158, 0.8), 0 0 30px rgba(254, 207, 239, 0.6); }
         }
+        #largepost {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #ffffff, #f9f9f9);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+            display: none;
+            max-width: 95vw;
+            max-height: 95vh;
+            overflow: auto;
+            border: 2px solid #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -440,8 +456,7 @@
             {
                 if(user.emailVerified === false)
                 {
-                alert("Please verify your email id first, to access your account");
-                window.location.href = "index.html";
+                    window.location.href = "sharesphere_email_verify.html";
                 }
                 let email = user.email;
                 let datadoc = await getDoc(doc(db, "users", email));
@@ -455,8 +470,9 @@
                 biodatadiv.innerText = datadoc.data().biodata;
                 let friendiv = document.getElementById("friends")
                 friends.innerText = "No of friends:- "+ datadoc.data().friends;
+                let username = datadoc.data().username;
                 let usernamediv = document.getElementById("username");
-                usernamediv.innerText = "Hi there, " + datadoc.data().username;
+                usernamediv.innerText = "Hi there, " + username;
                 let emaildiv = document.getElementById("emailid");
                 emaildiv.innerText = "Your email id:- " + email;
                 let loading = document.getElementById("loading");
@@ -478,6 +494,63 @@
                     caption.classList.add("caption");
                     caption.innerText = postdata.caption;
                     postdiv.appendChild(caption);
+
+                    postdiv.addEventListener("click", function (event) {
+                        event.stopPropagation();
+                        const largePost = document.getElementById("largepost");
+                        largePost.innerHTML = "";
+                        largePost.style.display = "flex";
+                        largePost.style.flexDirection = "column";
+                        largePost.style.alignItems = "center";
+                        largePost.style.border = "1px solid #ccc";
+                        largePost.style.padding = "20px";
+                        largePost.style.backgroundColor = "#f9f9f9";
+                        largePost.style.height = "auto";
+                        largePost.style.width = "auto";
+
+                        const largeuserDiv = document.createElement("div");
+                        largeuserDiv.textContent = username;
+                        largeuserDiv.style.marginBottom = "20px";
+                        largeuserDiv.style.fontWeight = "bold";
+                        largeuserDiv.style.fontFamily = "Arial, sans-serif";
+                        largeuserDiv.style.textAlign = "center";
+                        largePost.appendChild(largeuserDiv);
+                        const largeImg = document.createElement("img");
+                        largeImg.src = postdata.imageUrl;
+                        largeImg.alt = "Large Post Image";
+                        largeImg.style.maxWidth = "80vw";
+                        largeImg.style.maxHeight = "80vh";
+                        largeImg.style.borderRadius = "8px";
+
+                        const largeCaption = document.createElement("div");
+                        largeCaption.textContent = postdata.caption;
+                        largeCaption.style.marginTop = "10px";
+                        largeCaption.style.fontFamily = "Arial, sans-serif";
+                        largeCaption.style.color = "#333";
+                        largeCaption.style.fontSize = "1.2rem";
+
+                        largePost.appendChild(largeImg);
+                        largePost.appendChild(largeCaption);
+                        largePost.style.display = "block";
+                        let body = document.querySelector("body");
+                        document.addEventListener("click", function(event)
+                            {
+                                if (!largePost.contains(event.target))
+                                {
+                                    largePost.style.display = "none";
+                                }
+
+                            });
+                        let closebtn = document.createElement("div");
+                        closebtn.textContent = "Click anywhere to close";
+                        closebtn.style.marginTop = "10px";
+                        closebtn.style.fontFamily = "Arial, sans-serif";
+                        closebtn.style.color = "#777";
+                        closebtn.style.fontSize = "0.9rem";
+
+                        largePost.appendChild(closebtn);
+
+                    });
 
                     postsdiv.appendChild(postdiv);
                 }
@@ -506,6 +579,7 @@
         
 
     </script>
+    <div id = "largepost"></div>
     <script>
         testSpeed();
 async function testSpeed() {
