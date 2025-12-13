@@ -229,14 +229,25 @@
         const userPhoto = user.photoURL;
         const userUID = user.uid;
 
-        await updateDoc(doc(db, "users", userEmail),
-        {
-            username: userName,
-            email:userEmail,
-            friends: 0,
-            pfpUrl: userPhoto,
-            timestap: new Date()
-        });
+        let userd = await getDoc(doc(db, "users", userEmail));
+        if (!userd.exists()) {
+            await setDoc(doc(db, "users", userEmail),
+            {
+                username: userName,
+                email:userEmail,
+                friends: 0,
+                biodata: "The user has not set up a bio data yet.",
+                date_of_birth: "",
+                pfpUrl: userPhoto,
+                frequentchats: [],
+                frequentrooms: [],
+                friendlist: [],
+                friendrequestsreceived: [],
+                friendrequestssent: [],
+                timestap: new Date()
+            });
+        }
+
         const loginMethod = user.providerData[0].providerId;  
         console.log("Name:", userName);
         console.log("Email:", userEmail);
@@ -298,9 +309,12 @@
                         biodata: biodata,
                         friends: 0,
                         pfp: "",
+                        frequentchats: [],
+                        frequentrooms: [],
                         friendlist: [],
                         friendrequestsreceived: [],
                         friendrequestssent: [],
+
                         timestap: new Date()
                     })
                     .then(() => {
