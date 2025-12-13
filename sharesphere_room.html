@@ -327,6 +327,7 @@
                 <a href="sharesphere_find_people.html">Find People</a>
                 <a href="sharesphere_your_account.html">Your account</a>
                 <a href ="sharesphere_find_rooms.html">Join other room</a>
+                <a href = "sharesphere_frequentchats.html">Frequent Chat </a>
                 <a href="sharesphere_feedback.html">Feedback</a>
             </div>
 
@@ -415,7 +416,7 @@
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
-        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import {
             getAuth,
             signInWithEmailAndPassword,
@@ -482,10 +483,13 @@
         {
             if(user.emailVerified === false)
             {
-            alert("Please verify your email id first, to access your account");
-            window.location.href = "index.html";
+                window.location.href = "sharesphere_email_verify.html";
             }
             let roomid = new URLSearchParams(window.location.search).get("roomid");
+            updateDoc(doc(fs, "users", user.email),
+            {
+                frequentrooms: arrayUnion(roomid)
+            });
             let room = await getDoc(doc(fs, "rooms", roomid));
             let roomdescription = room.data().room_description;
             let roomidSafe = roomid.replace(/[.#$[\]/]/g, '_');
@@ -613,7 +617,7 @@
                 if (msg.songurl)
                 {
                 sentmessagediv.innerHTML = `<iframe width="320" height="180" 
-              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
+              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=0"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
                 }
                 if (msg.imageurl)
@@ -672,7 +676,7 @@
                 if (msg.songurl)
                 {
                 sentmessagediv.innerHTML = `<div id = "sendername">${sendername}</div><br><iframe width="320" height="180" 
-              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=1"
+              src="https://www.youtube.com/embed/${msg.songurl}?autoplay=0"
               frameborder="0" encrypted-media" allowfullscreen ></iframe>`;
                 }
                 if (msg.imageurl)
