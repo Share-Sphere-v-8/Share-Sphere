@@ -129,8 +129,12 @@
             transition: background-color 0.2s, box-shadow 0.2s;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 200px;
+            max-width: 400px;
             margin-top: 20px;
+        }
+        #googleBtn
+        {
+            font-size: 16px;
         }
         #googleBtn i, #emailBtn i {
             color: #ea4335;
@@ -220,8 +224,6 @@
         emailBtn.addEventListener("click", () => {
             let form = document.getElementById("signup-form");
             form.style.display = "flex";
-            let googleBtn = document.getElementById("googleBtn");
-            googleBtn.style.display = "none";
             emailBtn.style.display = "none";
             let or = emailBtn.nextElementSibling;
             or.style.display = "none";
