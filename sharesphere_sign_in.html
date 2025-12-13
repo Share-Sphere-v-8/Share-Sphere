@@ -186,17 +186,22 @@
         const userPhoto = user.photoURL;
         const userUID = user.uid;
 
-        await updateDoc(doc(db, "users", userEmail),
-        {
-            username: userName,
-            email:userEmail,
-            friends: 0,
-            pfpUrl: userPhoto,
-            friendlist: [],
-            friendrequestsreceived: [],
-            friendrequestssent: [],
-            timestap: new Date()
-        });
+        if (!userd.exists()) {
+            await setDoc(doc(db, "users", userEmail),
+            {
+                username: userName,
+                email:userEmail,
+                friends: 0,
+                pfpUrl: userPhoto,
+                biodata: "The user has not set up a bio data yet.",
+                frequentchats: [],
+                frequentrooms: [],
+                friendlist: [],
+                friendrequestsreceived: [],
+                friendrequestssent: [],
+                timestap: new Date()
+            });
+        }
         const loginMethod = user.providerData[0].providerId;  
         console.log("Name:", userName);
         console.log("Email:", userEmail);
