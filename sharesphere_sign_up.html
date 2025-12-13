@@ -33,7 +33,7 @@
             }
             #signup-form {
                 width: 100%;
-                display: flex;
+                display: none;
                 flex-direction: column;
                 align-items: center;
             }
@@ -112,7 +112,7 @@
             background-color: white;
             z-index: 1000;
         }
-        #googleBtn {
+        #googleBtn, #emailBtn {
             background-color: #ffffff;
             color: #3c4043;
             border: 1px solid #dadce0;
@@ -132,11 +132,11 @@
             max-width: 200px;
             margin-top: 20px;
         }
-        #googleBtn i {
+        #googleBtn i, #emailBtn i {
             color: #ea4335;
             font-size: 16px;
         }
-        #googleBtn:hover {
+        #googleBtn:hover, #emailBtn:hover {
             background-color: #f8f9fa;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
@@ -148,10 +148,11 @@
         </div>
         <h1>Share Sphere - Sign Up</h1>
         <div id = "box">
+            <h2>Create an account now</h2>
+            <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google<b>Recommended</b></button><br>
+            <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
+            <button id="emailBtn"><i class="fa fa envelope"></i> Create an account using email</button><br>
             <form id="signup-form">
-                <h2>Create an account now</h2>
-                <button id="googleBtn"><i class="fab fa-google"></i> Continue with Google</button><br>
-                <div style="margin: 10px; font-weight: bold; color: #6c757d;">OR</div>
                 <div id = "divfullname">
                     <input type="text" id="fullname" name="fullname" placeholder="Username" required>
                 </div><br>
@@ -215,6 +216,16 @@
 
         let loading = document.getElementById("loading");
         loading.style.display = "none";
+        let emailBtn = document.getElementById("emailBtn");
+        emailBtn.addEventListener("click", () => {
+            let form = document.getElementById("signup-form");
+            form.style.display = "flex";
+            let googleBtn = document.getElementById("googleBtn");
+            googleBtn.style.display = "none";
+            emailBtn.style.display = "none";
+            let or = emailBtn.nextElementSibling;
+            or.style.display = "none";
+        });
 
         document.getElementById("googleBtn").addEventListener("click", () => {
 
