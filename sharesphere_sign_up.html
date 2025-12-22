@@ -212,143 +212,135 @@
             measurementId: "G-DKHQ2H23VM"
         };
       
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        let auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
+        /* ------------------ Firebase Init ------------------ */
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
 
-        let loading = document.getElementById("loading");
-        loading.style.display = "none";
-        let emailBtn = document.getElementById("emailBtn");
-        emailBtn.addEventListener("click", () => {
-            let form = document.getElementById("signup-form");
-            form.style.display = "flex";
-            emailBtn.style.display = "none";
-            let or = emailBtn.nextElementSibling;
-            or.style.display = "none";
-        });
+/* ------------------ UI Elements ------------------ */
+const loading = document.getElementById("loading");
+loading.style.display = "none";
 
-        document.getElementById("googleBtn").addEventListener("click", () => {
+const emailBtn = document.getElementById("emailBtn");
+emailBtn.addEventListener("click", () => {
+  document.getElementById("signup-form").style.display = "flex";
+  emailBtn.style.display = "none";
+  emailBtn.nextElementSibling.style.display = "none";
+});
 
-    signInWithPopup(auth, provider)
-      .then(async (result) => {
+/* ------------------ Google Sign In ------------------ */
+document.getElementById("googleBtn").addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
-        const user = result.user;
+    const userRef = doc(db, "users", user.email);
+    const userSnap = await getDoc(userRef);
 
-        // STORE USER INFO IN VARIABLES
-        const userName = user.displayName;
-        const userEmail = user.email;
-        const userPhoto = user.photoURL;
-        const userUID = user.uid;
-
-        let userd = await getDoc(doc(db, "users", userEmail));
-        if (!userd.exists()) {
-            await setDoc(doc(db, "users", userEmail),
-            {
-                username: userName,
-                email:userEmail,
-                friends: 0,
-                biodata: "The user has not set up a bio data yet.",
-                date_of_birth: "",
-                pfpUrl: userPhoto,
-                frequentchats: [],
-                frequentrooms: [],
-                friendlist: [],
-                friendrequestsreceived: [],
-                friendrequestssent: [],
-                timestap: new Date()
-            });
-        }
-
-        const loginMethod = user.providerData[0].providerId;  
-        console.log("Name:", userName);
-        console.log("Email:", userEmail);
-        console.log("Photo:", userPhoto);
-        console.log("UID:", userUID);
-        console.log("Login Method:", loginMethod);
-        window.location.href = "sharesphere_public_page.html";
-
-      })
-      .catch(async (error) => {
-
-        if (error.code === "auth/account-exists-with-different-credential") {
-          const email = error.customData.email;
-          const methods = await fetchSignInMethodsForEmail(auth, email);
-
-          if (methods.includes("password")) {
-            alert("You already created an account using Email/Password. Please log in using email.");
-          }
-        } else {
-          console.error(error);
-        }
-
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        username: user.displayName,
+        email: user.email,
+        date_of_birth: "",
+        biodata: "The user has not set up a bio yet.",
+        friends: 0,
+        pfpUrl: user.photoURL || "",
+        frequentchats: [],
+        frequentrooms: [],
+        friendlist: [],
+        friendrequestsreceived: [],
+        friendrequestssent: [],
+        timestamp: new Date()
       });
+    }
 
-  });
+    console.log("Login method:", result.providerId);
+    window.location.href = "sharesphere_public_page.html";
 
-        let submit = document.getElementById("signup-form")
-        submit.addEventListener ("submit", signup);
-        function signup(event){
-            let submut = document.getElementById("submit");
-            submut.disabled = true;
-            event.preventDefault();
-            let fullname = document.getElementById("fullname").value;
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            let passwordconfirm = document.getElementById("passwordconfirm").value;
-            let dob = document.getElementById("dob").value
-            let biodata = document.getElementById("biodata").value
-            if (password === passwordconfirm){
-                if (password.length < 6){
-                    alert ("Password should be at least 6 characters long.");
-                    return;
-                }
-                loading.style.display = "flex";
-                createUserWithEmailAndPassword(auth, email, password)
-                .then (async (userCredential) => {
-                    let user = userCredential.user;
-                    await sendEmailVerification(user)
-                    .catch((error) =>{
-                        alert("An error occured, for further queries please mail to sharespherev.8@gmail.com or please kindly give us a feedback in our website.");
-                    })
-                    .then(()=>
-                    {
-                        setDoc(doc(db, "users", email),
-                    {
-                        username: fullname,
-                        email:email,
-                        date_of_birth: dob,
-                        biodata: biodata,
-                        friends: 0,
-                        pfp: "",
-                        frequentchats: [],
-                        frequentrooms: [],
-                        friendlist: [],
-                        friendrequestsreceived: [],
-                        friendrequestssent: [],
+  } catch (error) {
+    if (error.code === "auth/account-exists-with-different-credential") {
+      const email = error.customData.email;
+      const methods = await fetchSignInMethodsForEmail(auth, email);
 
-                        timestap: new Date()
-                    })
-                    .then(() => {
-                        alert ("Acoount created, an verification email has been sent, please click on the link and verify your email to continue using our application! (The mail might have reached the spam folder in your email");
-                        window.location.href = "sharesphere_email_verify.html";
-                    })
-                    .catch((error) => {
-                        alert ("Error Occured in sending data! Please retry");
-                        console.log(error);
-                    });
-                    });
-                })
-                .catch((error) => {
-                alert("Error occurred while creating account! Please try again.");
-                console.error("Error creating user: ", error);
-                });
-            }
-            else {
-                alert ("The password fields are differnt.");
-            }
-        }
+      if (methods.includes("password")) {
+        alert("This email is already registered using Email/Password login.");
+      }
+    } else {
+      console.error(error);
+      alert("Google sign-in failed.");
+    }
+  }
+});
+
+/* ------------------ Email Signup ------------------ */
+const signupForm = document.getElementById("signup-form");
+signupForm.addEventListener("submit", signup);
+
+async function signup(event) {
+  event.preventDefault();
+
+  const submitBtn = document.getElementById("submit");
+  submitBtn.disabled = true;
+
+  const fullname = document.getElementById("fullname").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const passwordconfirm = document.getElementById("passwordconfirm").value;
+  const dob = document.getElementById("dob").value;
+  const biodata = document.getElementById("biodata").value.trim();
+
+  if (password !== passwordconfirm) {
+    alert("Passwords do not match.");
+    submitBtn.disabled = false;
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters long.");
+    submitBtn.disabled = false;
+    return;
+  }
+
+  loading.style.display = "flex";
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    await sendEmailVerification(user);
+
+    await setDoc(doc(db, "users", email), {
+      username: fullname,
+      email: email,
+      date_of_birth: dob,
+      biodata: biodata,
+      friends: 0,
+      pfpUrl: "",
+      frequentchats: [],
+      frequentrooms: [],
+      friendlist: [],
+      friendrequestsreceived: [],
+      friendrequestssent: [],
+      timestamp: new Date()
+    });
+
+    alert(
+      "Account created successfully!\nA verification email has been sent.\nPlease verify your email to continue."
+    );
+
+    window.location.href = "sharesphere_email_verify.html";
+
+  } catch (error) {
+    console.error(error);
+    alert("Error occurred while creating account.");
+  } finally {
+    loading.style.display = "none";
+    submitBtn.disabled = false;
+  }
+}
+
         
     </script>
 </html>
