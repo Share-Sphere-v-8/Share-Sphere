@@ -174,7 +174,7 @@
             </div>
         </div>
     </nav>
-    <h1>Search for a song</h1>
+    <h1>Search fro a song</h1>
     <main>
         <div id = "search-section">
             <input type="text" id="search-input" placeholder="Search for songs...">
@@ -187,8 +187,10 @@
             searchSong();
         });
     </script>
-    <script>
+    <script type = "module">
+        
     async function searchSong() {
+        
       let query = document.getElementById("search-input").value;
       if (!query) return alert("Please enter a song name");
 
@@ -199,11 +201,20 @@
         let data = await response.json();
 
         if (data.items.length > 0) {
-          let videoId = data.items[0].id.videoId;
-          document.getElementById("player").innerHTML =
+            let i = 1;
+            while (i<data.items.length)
+            {
+                if (data.items[i].id.videoId != data.items[0].id.videoId)
+            {
+                 document.getElementById("player").innerHTML =
             `<iframe 
               src="https://www.youtube.com/embed/${videoId}?autoplay=1"
               frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
+            }
+                i++;
+            }
+          let videoId = data.items[0].id.videoId;
+         
         } else {
           alert("No video found");
         }
@@ -215,7 +226,18 @@
     </script>
     <script type = "module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+        import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            sendEmailVerification
+            } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+            import { getDatabase, ref, set, get, child, onValue, onChildAdded, push } 
+      from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ",
@@ -227,7 +249,10 @@
             measurementId: "G-MEASUREID"
         };
 
-        const auth = getAuth();
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getDatabase(app);
+        const fs = getFirestore(app);
 
         more.addEventListener("click", moreclicked);
         function moreclicked()
@@ -261,9 +286,74 @@
             {
                 window.location.href = "sharesphere_emial_verify.html";
             }
+            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            if (fndmeail)
+            {
+                let fndname = getnamefromemail(fndemail);
+
+                let send = document.createElement("div");
+                send.innerText = "Send song to " + fndname;
+                document.body.appendChild(send);
+                send.style.position = "fixed";
+                send.style.bottom = "10px";
+                send.style.right = "10px";
+                send.style.backgroundColor = "#001f3f";
+                send.style.color = "#edf6f9";
+                send.style.padding = "10px";
+                send.style.borderRadius = "5px";
+                send.style.cursor = "pointer";
+
+                send.addEventListener("click", async() =>
+            {
+                let address;
+                if (user.email > fndemail) {
+                    address = `${useremailSafe}_${fndemailSafe}`;
+                } else {
+                    address = `${fndemailSafe}_${useremailSafe}`;
+                }
+                const chatRef = ref(db, `chats/${address}/messages`);
+                let query = document.getElementById("search").value;
+                if (!query) return alert("Please enter a song name");
+
+                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (data.items.length > 0) {
+                let videoId = data.items[0].id.videoId;
+                console.log(videoId);
+                const newMsg = push(chatRef);
+                set(newMsg, {
+                sender: user.email,
+                songurl: videoId,
+                timestamp: Date.now()
+                });
+                let songbox = document.getElementById("songbox");
+                videoiframe.innerHTML = "";
+                songbox.style.display = "none";
+                }
+                else{
+                    alert("No video found");
+                    return;
+                }
+            });
+            }
         }
         });
+        async function getnamefromemail(email)
+        {
+            let name = "";
+            await getDoc(doc(fs, "users", email)).then((docSnap) => {
+                if (docSnap.exists()) {
+                    name = docSnap.data().name;
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+            return name;
+        }
     </script>
 </body>
 </html>
-
