@@ -479,6 +479,12 @@
         });
         let loading = document.getElementById("loading");
         onAuthStateChanged(auth, async (user)=> {
+            console.log(user);
+            if(!user)
+            {
+                alert("you are not logged in!");
+                window.location.href="index.html";
+            }
             if (user)
         {
             if(user.emailVerified === false)
@@ -716,6 +722,8 @@
             }
         });
         addsong.addEventListener("click", ()=>{
+            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+            window.location.href = "sharesphere_song_search.html?fndemail=" + fndemail;
             songbox.style.display = "flex";
         });
         
