@@ -272,6 +272,7 @@
                 send.style.cursor = "pointer";
                 send.style.fontSize = "16px";
                 send.style.fontWeight = "bold";
+                sned.marginTop = "20px";
                 send.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
                 send.style.transition = "background-color 0.3s ease, transform 0.2s ease";
 
@@ -308,6 +309,9 @@
                 sender: user.email,
                 songurl: videoId,
                 timestamp: Date.now()
+                })
+                .then(() => {
+                    window.location.href = "sharesphere_chat.html?fndemail=" + fndemail;
                 });
                 }
                 else{
