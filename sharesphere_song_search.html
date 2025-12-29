@@ -182,51 +182,8 @@
         </div>
             <div id="player"></div>
     </main>
-    <script>
-        document.getElementById('search-button').addEventListener('click', function() {
-            searchSong();
-        });
-    </script>
-    <script type = "module">
-        
-    async function searchSong() {
-        
-      let query = document.getElementById("search-input").value;
-      if (!query) return alert("Please enter a song name");
-
-      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
-
-      try {
-        let response = await fetch(url);
-        let data = await response.json();
-
-        if (data.items.length > 0) {
-            let i = 1;
-            while (i<data.items.length)
-            {
-                if (data.items[i].id.videoId != data.items[0].id.videoId)
-            {
-                 document.getElementById("player").innerHTML =
-            `<iframe 
-              src="https://www.youtube.com/embed/${videoId}?autoplay=1"
-              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
-            }
-                i++;
-            }
-          let videoId = data.items[0].id.videoId;
-         
-        } else {
-          alert("No video found");
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Error fetching YouTube data");
-      }
-    }
-    </script>
     <script type = "module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
         import { getFirestore, doc, setDoc, addDoc, updateDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
         import {
             getAuth,
@@ -248,11 +205,11 @@
             appId: "1:109994622137:web:3a3f5f5e2f5e8e2e8e2e8e",
             measurementId: "G-MEASUREID"
         };
-
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getDatabase(app);
         const fs = getFirestore(app);
+        let auth = await getAuth(app);
+        console.log(auth);
 
         more.addEventListener("click", moreclicked);
         function moreclicked()
@@ -276,18 +233,22 @@
                 alert("Error occured while signing out, please try again later.")
             });
         }
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "index.html";
-            }
+        onAuthStateChanged(auth, async (user) => {
+            console.log(user);
+            alert("Auth state changed");
             if(user)
             {
+                alert("Logged in as " + user.email);
             if(!user.emailVerified)
             {
                 window.location.href = "sharesphere_emial_verify.html";
             }
+
             let fndemail = new URLSearchParams(window.location.search).get("fndemail");
-            if (fndmeail)
+            let useremailSafe = user.email.replace(".", "_");
+            let fndemailSafe = fndemail.replace(".", "_");
+            console.log(fndemail);
+            if (fndemail)
             {
                 let fndname = getnamefromemail(fndemail);
 
@@ -354,6 +315,44 @@
             });
             return name;
         }
+         document.getElementById('search-button').addEventListener('click', function() {
+            searchSong();
+        });
+    async function searchSong() {
+        
+      let query = document.getElementById("search-input").value;
+      if (!query) return alert("Please enter a song name");
+
+      let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
+
+      try {
+        let response = await fetch(url);
+        let data = await response.json();
+
+        if (data.items.length > 0) {
+            let i = 1;
+            while (i<data.items.length)
+            {
+                if (data.items[i].id.videoId != data.items[0].id.videoId)
+            {
+                let videoId = data.items[0].id.videoId;
+                 document.getElementById("player").innerHTML =
+            `<iframe 
+              src="https://www.youtube.com/embed/${videoId}?autoplay=1"
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen ></iframe>`;
+            }
+                i++;
+            }
+          let videoId = data.items[0].id.videoId;
+         
+        } else {
+          alert("No video found");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error fetching YouTube data");
+      }
+    }
     </script>
 </body>
 </html>
