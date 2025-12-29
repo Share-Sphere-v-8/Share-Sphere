@@ -151,6 +151,9 @@
                 gap: 0.2rem;
             }
         }
+        #send-song-btn:hover {
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body>
@@ -197,13 +200,14 @@
       from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ",
-            authDomain: "share-sphere-6f3b1.firebaseapp.com",
-            projectId: "share-sphere-6f3b1",
-            storageBucket: "share-sphere-6f3b1.appspot.com",
-            messagingSenderId: "109994622137",
-            appId: "1:109994622137:web:3a3f5f5e2f5e8e2e8e2e8e",
-            measurementId: "G-MEASUREID"
+            apiKey: "AIzaSyBDXLWL-WySSNnRLL1khrnuWYnUE3-OF74",
+            authDomain: "share-sphere-v-8.firebaseapp.com",
+            databaseURL: "https://share-sphere-v-8-default-rtdb.firebaseio.com",
+            projectId: "share-sphere-v-8",
+            storageBucket: "share-sphere-v-8.firebasestorage.app",
+            messagingSenderId: "931094139319",
+            appId: "1:931094139319:web:4d202e258a5c4231ea9832",
+            measurementId: "G-DKHQ2H23VM"
         };
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
@@ -234,35 +238,51 @@
             });
         }
         onAuthStateChanged(auth, async (user) => {
-            console.log(user);
-            alert("Auth state changed");
+            if (!user) {
+                alert("You are not logged in!");
+                window.location.href = "index.html";
+            }
             if(user)
             {
-                alert("Logged in as " + user.email);
             if(!user.emailVerified)
             {
                 window.location.href = "sharesphere_emial_verify.html";
             }
 
             let fndemail = new URLSearchParams(window.location.search).get("fndemail");
-            let useremailSafe = user.email.replace(".", "_");
-            let fndemailSafe = fndemail.replace(".", "_");
-            console.log(fndemail);
+            let useremailSafe = user.email.replace(/\./g, ",");
+            let fndemailSafe = fndemail.replace(/\./g, ",");
+            console.log(useremailSafe);
+            console.log(fndemailSafe);
             if (fndemail)
             {
-                let fndname = getnamefromemail(fndemail);
+                let fndname = await getnamefromemail(fndemail);
 
-                let send = document.createElement("div");
+                let send = document.createElement("button");
                 send.innerText = "Send song to " + fndname;
+                send.id = "send-song-btn";
                 document.body.appendChild(send);
-                send.style.position = "fixed";
-                send.style.bottom = "10px";
-                send.style.right = "10px";
-                send.style.backgroundColor = "#001f3f";
+                send.style.bottom = "20px";
+                send.style.right = "20px";
+                send.style.backgroundColor = "#00b4d8";
                 send.style.color = "#edf6f9";
-                send.style.padding = "10px";
-                send.style.borderRadius = "5px";
+                send.style.padding = "12px 20px";
+                send.style.border = "none";
+                send.style.borderRadius = "8px";
                 send.style.cursor = "pointer";
+                send.style.fontSize = "16px";
+                send.style.fontWeight = "bold";
+                send.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+                send.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+                send.addEventListener("mouseover", () => {
+                    send.style.backgroundColor = "#007bff";
+                    send.style.transform = "scale(1.05)";
+                });
+                send.addEventListener("mouseout", () => {
+                    send.style.backgroundColor = "#00b4d8";
+                    send.style.transform = "scale(1)";
+                });
 
                 send.addEventListener("click", async() =>
             {
@@ -273,7 +293,7 @@
                     address = `${fndemailSafe}_${useremailSafe}`;
                 }
                 const chatRef = ref(db, `chats/${address}/messages`);
-                let query = document.getElementById("search").value;
+                let query = document.getElementById("search-input").value;
                 if (!query) return alert("Please enter a song name");
 
                 let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
@@ -289,9 +309,6 @@
                 songurl: videoId,
                 timestamp: Date.now()
                 });
-                let songbox = document.getElementById("songbox");
-                videoiframe.innerHTML = "";
-                songbox.style.display = "none";
                 }
                 else{
                     alert("No video found");
@@ -306,7 +323,7 @@
             let name = "";
             await getDoc(doc(fs, "users", email)).then((docSnap) => {
                 if (docSnap.exists()) {
-                    name = docSnap.data().name;
+                    name = docSnap.data().username;
                 } else {
                     console.log("No such document!");
                 }
