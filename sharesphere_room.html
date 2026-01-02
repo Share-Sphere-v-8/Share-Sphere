@@ -272,6 +272,35 @@
             width: 100%;
             background-color: #ffffff;
         }
+        #viewmembers
+        {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #roomname
+        {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        #viewmembersbox
+        {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -315,33 +344,36 @@
     <div id = "loading">
         <img src = "loading.gif"></img>
     </div>
-        <div id = "chatcon">
-            <nav id="navbar">
-            <div id="nav-container">
-            <div id="name">
-                <span>Share Sphere</span>
-            </div>
-            <button id = "more">&#9776;</button>
-            <div id="desktop-nav">
-                <a href="sharesphere_public_page.html">Home</a>
-                <a href="sharesphere_find_people.html">Find People</a>
-                <a href="sharesphere_your_account.html">Your account</a>
-                <a href ="sharesphere_find_rooms.html">Join other room</a>
-                <a href = "sharesphere_frequentchats.html">Frequent Chat </a>
-                <a href="sharesphere_feedback.html">Feedback</a>
-            </div>
-
-            <div id="auth-buttons">
-                <button id="logout">Log Out</button>
-            </div>
-            
+    <div id = "chatcon">
+        <nav id="navbar">
+        <div id="nav-container">
+        <div id="name">
+            <span>Share Sphere</span>
         </div>
-    </nav>
+        <button id = "more">&#9776;</button>
+        <div id="desktop-nav">
+            <a href="sharesphere_public_page.html">Home</a>
+            <a href="sharesphere_find_people.html">Find People</a>
+            <a href="sharesphere_your_account.html">Your account</a>
+            <a href ="sharesphere_find_rooms.html">Join other room</a>
+            <a href = "sharesphere_frequentchats.html">Frequent Chat </a>
+            <a href="sharesphere_feedback.html">Feedback</a>
+        </div>
+
+        <div id="auth-buttons">
+            <button id="logout">Log Out</button>
+        </div>
+        
+        </div>
+        </nav>
             <div id = "chatheading">
-                <div id ="roomname"></div>
-                <div id = "roomid"></div>
+                <div id = "descandname">
+                    <div id ="roomname"></div>
+                    <div id = "roomid"></div>
+                </div>
+                <button id = "viewmembers">View Members</button>
             </div>
-            <div id = "chatbox">
+                <div id = "chatbox">
             </div>
             <div id = "inputbox">
                 <form id = "input">
@@ -364,6 +396,7 @@
     <div id = "largeimagebox" style="display:none;">
         <img id = "largeimage" src = "">
     </div>
+    <div id = "viewmembersbox"></div>
     <button id = "helpbut">Chat laguage help!</button>
     <div id="helpbox">
     <h2>Chat short forms</h2>
@@ -495,10 +528,19 @@
             let roomidSafe = roomid.replace(/[.#$[\]/]/g, '_');
             let useremailSafe = user.email.replace(/[.#$[\]/]/g, '_');
             let roomname = room.data().room_name;
+            let roommembers = room.data().members;
+            if (!roommembers.includes(user.email))
+            {
+                roommembers.push(user.email);
+                await updateDoc(doc(fs, "rooms", roomid),
+                {
+                    members: roommembers
+                });
+            }
             let roomnamediv = document.getElementById("roomname");
-            roomnamediv.innerText = roomid;
+            roomnamediv.innerText = "Room name -" + roomid;
             let roomiddiv = document.getElementById("roomid");
-            roomiddiv.innerText = roomdescription;
+            roomiddiv.innerText = "Description - " + roomdescription;
             loading.style.display = "none";
             let inputform = document.getElementById("input");
             let text = document.getElementById("text").value;
@@ -726,6 +768,27 @@
             largeimagebox.style.display = "none";
             let lgimg = document.getElementById("largeimage");
             lgimg.src = "";
+        });
+        let viewmembers = document.getElementById("viewmembers");
+        viewmembers.addEventListener("click", async() => {
+            let roomid = new URLSearchParams(window.location.search).get("roomid");
+            let room = await getDoc(doc(fs, "rooms", roomid));
+            let roommembers = room.data().members;
+            let viewmembersbox = document.getElementById("viewmembersbox");
+            viewmembersbox.innerHTML = "<h2>Room Members</h2>";
+            viewmembersbox.style.display = "block";
+            viewmembersbox.addEventListener("click", (e) => {
+                if (e.target === viewmembersbox) {
+                    viewmembersbox.style.display = "none";
+                    viewmembersbox.innerHTML = "";
+                }
+            });
+            roommembers.forEach((member) => {
+                let memberdiv = document.createElement("div");
+                memberdiv.innerText = member;
+                memberdiv.style.margin = "10px";
+                viewmembersbox.appendChild(memberdiv);
+            });
         });
     </script>
     <script>
