@@ -760,7 +760,7 @@
             }
         });
         addsong.addEventListener("click", ()=>{
-            songbox.style.display = "flex";
+            window.location.href = "sharesphere_song_search.html?roomid=" + new URLSearchParams(window.location.search).get("roomid");
         });
         
         let largeimagebox = document.getElementById("largeimagebox");
