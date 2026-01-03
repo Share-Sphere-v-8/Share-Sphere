@@ -248,14 +248,15 @@
             {
                 window.location.href = "sharesphere_emial_verify.html";
             }
-
+            let roomid = new URLSearchParams(window.location.search).get("roomid");
+            console.log("Room ID: " + roomid);
             let fndemail = new URLSearchParams(window.location.search).get("fndemail");
-            let useremailSafe = user.email.replace(/\./g, ",");
+            if (fndemail)
+            {
+                let useremailSafe = user.email.replace(/\./g, ",");
             let fndemailSafe = fndemail.replace(/\./g, ",");
             console.log(useremailSafe);
             console.log(fndemailSafe);
-            if (fndemail)
-            {
                 let fndname = await getnamefromemail(fndemail);
 
                 let send = document.createElement("button");
@@ -320,6 +321,67 @@
                 }
             });
             }
+            else if (roomid)
+            {
+                let roomidSafe = roomid.replace(/\./g, ",");
+            console.log("Safe Room ID: " + roomidSafe);
+                let send = document.createElement("button");
+                send.innerText = "Send song to - " + roomid;
+                send.id = "send-song-btn";
+                document.body.appendChild(send);
+                send.style.bottom = "20px";
+                send.style.right = "20px";
+                send.style.backgroundColor = "#00b4d8";
+                send.style.color = "#edf6f9";
+                send.style.padding = "12px 20px";
+                send.style.border = "none";
+                send.style.borderRadius = "8px";
+                send.style.cursor = "pointer";
+                send.style.fontSize = "16px";
+                send.style.fontWeight = "bold";
+                send.marginTop = "20px";
+                send.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+                send.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+                send.addEventListener("mouseover", () => {
+                    send.style.backgroundColor = "#007bff";
+                    send.style.transform = "scale(1.05)";
+                });
+                send.addEventListener("mouseout", () => {
+                    send.style.backgroundColor = "#00b4d8";
+                    send.style.transform = "scale(1)";
+                });
+
+                send.addEventListener("click", async() =>
+            {
+                let address = roomidSafe;
+                const chatRef = ref(db, `roomchats/${address}/messages`);
+                let query = document.getElementById("search-input").value;
+                if (!query) return alert("Please enter a song name");
+
+                let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=videoCategoryId=10&q=${encodeURIComponent(query)}&key=AIzaSyDjZng4T299cUjZGK2IIVRDloOZcNYO6HQ`;
+                let response = await fetch(url);
+                let data = await response.json();
+
+                if (data.items.length > 0) {
+                let videoId = data.items[0].id.videoId;
+                console.log(videoId);
+                const newMsg = push(chatRef);
+                set(newMsg, {
+                sender: user.email,
+                songurl: videoId,
+                timestamp: Date.now()
+                })
+                .then(() => {
+                    window.location.href = "sharesphere_room.html?roomid=" + roomid;
+                });
+                }
+                else{
+                    alert("No video found");
+                    return;
+                }
+            });
+        }
         }
         });
         async function getnamefromemail(email)
