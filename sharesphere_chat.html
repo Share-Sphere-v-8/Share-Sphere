@@ -489,6 +489,7 @@
         });
         let loading = document.getElementById("loading");
         let captureimage = document.getElementById("captureimage");
+        let fndemail = new URLSearchParams(window.location.search).get("fndemail");
         captureimage.addEventListener("click", () =>
         {
             window.location.href = `camera.html?fndemail=${fndemail}`;
@@ -506,7 +507,6 @@
             {
                 window.location.href = "sharesphere_email_verify.html";
             }
-            let fndemail = new URLSearchParams(window.location.search).get("fndemail");
             updateDoc(doc (fs, "users", user.email),
             {
                 frequentchats: arrayUnion(fndemail)
