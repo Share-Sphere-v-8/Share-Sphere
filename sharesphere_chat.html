@@ -349,6 +349,7 @@
                     <button id = "addsong">Add Song</button>
                     <input type = "file" id = "imageinput" accept="image/*" style="display:none;">
                     <button id = "addimage">Add Image</button>
+                    <button if = "captureimage">Capture Image</button>
                 </div>
             </div>
         </div>
@@ -405,7 +406,7 @@
         <img src = "loading.gif" >
     </div>
     <footer style="text-align: center; padding: 20px; color: rgba(255,0,0,0.7); font-size: 0.9rem; margin-top: 50px;">
-            © 2025 Share Sphere - Copyrights reserved 
+            © 2026 Share Sphere - Copyrights reserved 
         </footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type = "module">
@@ -478,6 +479,11 @@
             helpbox.style.display = "none";
         });
         let loading = document.getElementById("loading");
+        let captureimage = document.getElementById("captureimage");
+        captureimage.addEventListener("click", () =>
+        {
+            window.location.href = `camera.html?fndemail=${fndemail}`;
+        });
         onAuthStateChanged(auth, async (user)=> {
             console.log(user);
             if(!user)
