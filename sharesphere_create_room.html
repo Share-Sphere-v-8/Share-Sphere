@@ -362,8 +362,7 @@
     onAuthStateChanged(auth, async (user) => {
         if(!user.emailVerified)
         {
-            alert("Please verify your email first to use our application, an link has been sent in your email, please clcik on that link to continue using our application. Please find the email in the spam folder.");
-            window.locaiton.href = "sharesphere_logout.html";
+            window.location.href = "sharesphere_email_verify.html";
         }
         if(user)
         {
@@ -381,12 +380,14 @@
                     created_by: user.email,
                     room_name: roomname,
                     room_description: roomd,
+                    created_at: new Date(),
+                    members: [user.email]
                 })
                 .then(() => {
                     alert("Room created succesfully!");
                     form.reset();
                     loading.style.display = "none";
-                    window.location.href = "sharesphere_public_page.html";
+                    window.location.href = "sharesphere_room.html?roomid=" + roomname;
                 })
                 .catch((error) => {
                         alert ("Error Occured on creating room! Please retry");
