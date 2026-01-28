@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>u1Camera Capture + Supabase Upload</title>
+    <title>u2Camera Capture + Supabase Upload</title>
 
     <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -139,11 +139,13 @@
     let fndemailSafe = null;
     let useremailSafe = null;
     let captureim = false;
+    let fndemail = new URLSearchParams(window.location.search).get("fndemail");
+    let roomid = new URLSearchParams(window.location.search).get("roomid");
     await onAuthStateChanged(auth, (u) => {
         if (u) {
             user = u;
             console.log("User logged in:", user.email);
-             if (fndemail)
+            if (fndemail)
             {
             fndemailSafe = fndemail.replace(/\./g, ",");
             useremailSafe = user.email.replace(/\./g, ",");
@@ -156,8 +158,6 @@
         }
     });
 
-    let fndemail = new URLSearchParams(window.location.search).get("fndemail");
-    let roomid = new URLSearchParams(window.location.search).get("roomid");
     /* ------------------ CAMERA AUTO START ------------------ */
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
@@ -196,7 +196,7 @@
             return;
         }
         canvas.toBlob(async (blob) => {
-            const fileName = `photo_${user.email}_${Date.now()}.png`;
+            const fileName = `${Date.now()}_${user.email}.png`;
 
             const { data, error } = await supabasec.storage
                 .from("chatimages")   // bucket name
@@ -215,7 +215,7 @@
                 const chatRef = ref(db, `chats/${address}/messages`);
                 const newMsg = push(chatRef);
                 alert(publicUrl);
-                await (newMsg, {
+                await set(newMsg, {
                 sender: user.email,
                 imageurl: publicUrl,
                 timestamp: Date.now()
