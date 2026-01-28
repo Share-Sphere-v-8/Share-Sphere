@@ -242,9 +242,12 @@
                 return;
             }
 
-
+            if (roomid) {
+                window.location.href = `sharesphere_room.html?roomid=${roomid}`;
+            } else {
             window.location.href = `sharesphere_chat.html?fndemail=${fndemail}`;
             console.log("Image URL:", urlData.publicUrl);
+            }
         });
     }
 </script>
