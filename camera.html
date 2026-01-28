@@ -74,9 +74,19 @@
         #canvas.show {
             display: block;
         }
+        #loading
+        {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div id = "loading"><img src = "loading"></div>
 
 <h2>Camera Image</h2>
 
@@ -191,6 +201,7 @@
 
     /* ------------------ UPLOAD TO SUPABASE ------------------ */
     async function uploadImage() {
+        loading.display = "block";
         if (!captureim) {
             alert("Please capture an image first!");
             return;
