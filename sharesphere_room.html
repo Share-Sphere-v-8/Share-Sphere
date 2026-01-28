@@ -277,6 +277,16 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        #closebtn
+        {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            cursor: pointer;
+        }
         #roomname
         {
             font-size: 1.1rem;
@@ -406,6 +416,7 @@
     <button id = "helpbut">Chat laguage help!</button>
     <div id="helpbox">
     <h2>Chat short forms</h2>
+    <div id ="closebtn">X</div>
 
     <div class="item"><b>LOL:</b> Laugh Out Loud</div>
     <div class="item"><b>ROFL:</b> Rolling On the Floor Laughing</div>
@@ -500,7 +511,7 @@
         {
             helpbox.style.display = "block";
         });
-        helpbox.addEventListener("click", () =>
+        closebtn.addEventListener("click", () =>
         {
             helpbox.style.display = "none";
         });
