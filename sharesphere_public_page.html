@@ -32,6 +32,7 @@
             left: 0;
             margin-bottom: 2px;
             z-index: 1000;
+            margin-top: 0px;
         }
 
         #nav-container {
@@ -300,6 +301,16 @@
             color: #555555;
             cursor: pointer;
         }
+        #closebtn
+        {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            cursor: pointer;
+        }
          @media (min-width: 1271px) {
             #auth-buttons {
                 flex-direction: row;
@@ -376,6 +387,7 @@
     </div>
     <button id = "helpbut">Chat laguage help!</button>
     <div id="helpbox">
+    <div id ="closebtn">X</div>
     <h2>Chat short forms</h2>
 
     <div class="item"><b>LOL:</b> Laugh Out Loud</div>
@@ -476,7 +488,8 @@
         {
             helpbox.style.display = "block";
         });
-        helpbox.addEventListener("click", () =>
+        let closebtn = document.getElementById("closebtn");
+        closebtn.addEventListener("click", () =>
         {
             helpbox.style.display = "none";
         });
