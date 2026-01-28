@@ -227,7 +227,6 @@
                 else{
                     const chatRef = ref(db, `chats/${address}/messages`);
                 const newMsg = push(chatRef);
-                alert(publicUrl);
                 await set(newMsg, {
                 sender: user.email,
                 imageurl: publicUrl,
