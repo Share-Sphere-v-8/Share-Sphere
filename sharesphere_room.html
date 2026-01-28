@@ -301,6 +301,15 @@
             max-height: 80vh;
             overflow-y: auto;
         }
+        #captureimage
+        {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
         @media (min-width: 751px) {
             #auth-buttons {
                 flex-direction: row;
@@ -384,6 +393,7 @@
                     <button id = "addsong">Add Song</button>
                     <input type = "file" id = "imageinput" accept="image/*" style="display:none;">
                     <button id = "addimage">Add Image</button>
+                    <button id = "captureimage">Capture Image</button>
                 </div>
             </div>
         </div>
@@ -519,6 +529,10 @@
                 window.location.href = "sharesphere_email_verify.html";
             }
             let roomid = new URLSearchParams(window.location.search).get("roomid");
+            captureimage.addEventListener("click", () =>
+        {
+            window.location.href = `camera.html?roomid=${roomid}`;
+        });
             updateDoc(doc(fs, "users", user.email),
             {
                 frequentrooms: arrayUnion(roomid)
