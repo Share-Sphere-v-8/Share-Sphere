@@ -227,7 +227,6 @@
                     address = roomid;
                     const chatRef = ref(db, `roomchats/${address}/messages`);
                 const newMsg = push(chatRef);
-                alert(publicUrl);
                 await set(newMsg, {
                 sender: user.email,
                 imageurl: publicUrl,
@@ -264,3 +263,4 @@
 
 </body>
 </html>
+
